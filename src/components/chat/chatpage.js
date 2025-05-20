@@ -21,7 +21,6 @@ export default function ChatPage({ user_sender, user_receiver }) {
       `${date.toTimeString().split(' ')[0]}`;
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim() === '') return;
