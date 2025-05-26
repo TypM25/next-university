@@ -57,9 +57,9 @@ export default function StudentReg() {
     }
 
     return (
-        <div className='flex justify-center items-center w-full h-full p-20'>
+        <div className='flex justify-center items-center w-full h-full p-10 md:p-20'>
             <form className='flex flex-col w-2/3 lg:w-[450px]'>
-                <label className='text-center mb-10 text-3xl font-semibold text-[#8E1616]'>ลงทะเบียนนิสิต</label>
+              <label className='inline text-center mb-10 text-3xl font-semibold text-[#8E1616]'>ลงทะเบียนนิสิต</label>
                 <p className='self-start font-semibold text-xl text-black/70'>รหัสผู้ใช้</p>
                 <input id='user_id' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-white font-light' type='text'></input>
                 <p className='self-start font-semibold text-xl text-black/70'>ชื่อ</p>

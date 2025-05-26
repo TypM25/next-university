@@ -3,45 +3,62 @@
 import { useState } from "react";
 import LoadingMui from "../loadingMui";
 
-export default function Table({ data }) {
+export default function Table({ isLoading, data }) {
     return (
         <>
-            {Array.isArray(data) && data.length !== 0 ? (
-                <table className="w-fit h-fit text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                    <thead className="text-xs text-white uppercase  bg-[#8E1616] text-center">
-                        <tr>
-                            {Object.keys(data[0]).map((key, index) => (
-                                <th key={index} className="text-lg px-6 py-3">{key}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {data?.length > 0 ?
-                            (data.map((item, index) => (
-                                <tr key={index} className="border-b border-gray-200 ">
-                                    {Object.values(item).map((value, idx) => (
-                                        <td key={idx} className="px-4 py-4 text-center text-xl text-gray-700 bg-white/60">
-                                            {Array.isArray(value) && value.length > 0 ? (
-                                                value.map((teacher, i) => (
-                                                    <div key={i}>
-                                                        {teacher.teacher_first_name} {teacher.teacher_last_name}
-                                                    </div>
-                                                ))
-                                            ) : 
-                                              (value === null || value.length === 0 ? "-" : value)}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))) : (
-                                <LoadingMui />
-                            )}
-                    </tbody>
-                </table>
+            {isLoading ? (
+                <LoadingMui />
             ) : (
-                <p colSpan="4" className="px-6 py-6 text-center text-lg text-gray-400 ">
-                    ไม่มีข้อมูลรายวิชา
-                </p>
+
+                <div className="w-auto h-auto overflow-x-auto max-w-full max-h-[400px] 
+                    md:flex ">
+                    <table className="w-full text-sm text-gray-500">
+                        <thead className="text-xs text-white uppercase bg-[#8E1616] text-center">
+                            <tr>
+                                {data && data.length > 0 ?
+                                    Object.keys(data[0]).map((key, index) => (
+                                        <th key={index} scope="col" className="p-2 text-sm md:text-lg md:px-6 md:py-3">
+                                            {key}
+                                        </th>
+                                    )) : null}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data && data.length > 0 ? (
+                                data.map((item, index) => (
+                                    <tr key={index} className="border-b border-gray-200 dark:border-gray-300">
+                                        {Object.values(item).map((value, idx) => (
+                                            <td
+                                                key={idx}
+                                                className={`p-1 text-center text-sm md:text-xl md:px-6 md:py-4 ${idx % 2 === 0 ? "bg-white" : "bg-gray-200"}`}>
+                                                {
+                                                    value == null || value === "" ?
+                                                        "-"
+                                                        : typeof value === "boolean" ?
+                                                            value ?
+                                                                "True"
+                                                                : "False"
+                                                            : value
+                                                }
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td
+                                        colSpan={data && data.length > 0 ? Object.keys(data[0]).length : 1}
+                                        className="px-6 py-6 text-center md:text-lg text-gray-600"
+                                    >
+                                        ไม่มีข้อมูล
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </>
+
     );
 }

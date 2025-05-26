@@ -16,13 +16,13 @@ export default function StudentLayout({ children }) {
     }
   }, []);
   return (
-    <div className='relative min-h-screen w-screen bg-[#FEF9E1]'>
+    <div className='relative min-h-screen w-screen bg-[#FEF9E1] overflow-hidden'>
 
       <div className='fixed p-4 w-full z-50'>
         <StudentNavbar />
       </div>
 
-      <div className='flex justify-center items-center min-h-screen w-screen py-28'>
+      <div className='flex justify-center items-center min-h-screen w-screen py-14 md:py-28'>
         {children}
 
        {user && <ChatIcon user_id={user.user_id} role={user.role[0]} />}

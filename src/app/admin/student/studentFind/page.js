@@ -55,10 +55,9 @@ export default function StudentFind() {
 
 
     return (
-        <div className=' h-[50%] px-4 py-20 flex flex-col justify-center items-center rounded-3xl
+        <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl
         lg:w-[50%] lg:px-10'>
             <p className='text-3xl font-bold mb-10 text-[#8E1616]'>ค้นหาข้อมูลนิสิต</p>
-            <div className='w-full '>
                 <div className='h-auto w-full flex flex-col gap-5 justify-center items-center text-center
                 lg:flex-row lg:gap-10'>
                     <p className='self-center text-xl font-semibold text-black'> รหัสนิสิต :</p>
@@ -80,7 +79,7 @@ export default function StudentFind() {
                     onClick={clickFind} className='w-20 py-2 h-full mx-3 font-bold text-[#8E1616] rounded-full bg-gray-500 hover:bg-gray-700'>
                         ค้นหา</button> */}
                 </div>
-                <div className='w-full h-full py-10 px-10 lg:px-20 '>
+                <div className='w-fit h-full mt-10 '>
                     <div className='flex mb-7'>
                         <p className='text-xl mr-3 text-black/70 '>ชื่อ : </p>
                         <p className='self-center text-xl text-[#BB3E00]'> {studentData.student_first_name}</p>
@@ -93,40 +92,40 @@ export default function StudentFind() {
                         <p className='text-xl text-xl mb-10 text-black/70'>วิชาที่ลงเรียน : </p>
 
                         <table className='inline'>
-                            <thead className=" text-xs text-white uppercase bg-[#8E1616]">
+                            <thead className=" text-xs text-white bg-[#8E1616]">
                                 <tr>
-                                    <th scope="col" className="text-lg px-6 py-3">รหัสรายวิชา</th>
-                                    <th scope="col" className="text-lg px-6 py-3">ชื่อวิชา</th>
-                                    <th scope="col" className="text-lg px-6 py-3">สอนโดย</th>
+                                    <th scope="col" className="text-lg p-1 md:px-6 md:py-3">รหัสรายวิชา</th>
+                                    <th scope="col" className="text-lg p-1 md:px-6 md:py-3">ชื่อวิชา</th>
+                                    <th scope="col" className="text-lg p-1 md:px-6 md:py-3">สอนโดย</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {subject.length > 0 ? subject.map((subject, index) => (
                                     <tr key={index} className="border-b border-gray-200 dark:border-gray-300">
-                                        <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap bg-white text-center text-xl">
+                                        <td className="p-1 md:px-6 md:py-4 font-medium text-gray-900 whitespace-nowrap bg-white text-center text-xl">
                                             {subject.subject_id}
                                         </td>
-                                        <td className="px-6 py-4 text-center text-xl bg-gray-200">
+                                        <td className="p-1 md:px-6 md:py-4 text-center text-xl bg-gray-200">
                                             {subject.subject_name}
                                         </td>
-                                        <td className="px-6 py-4 bg-gray-50 bg-white text-center text-xl ">
-                                            {Array.isArray(subject.teachers) && subject.teachers.length > 0 ? subject.teachers.map((tech) => tech.teacher_first_name + " " + tech.teacher_last_name ) 
-                                            : "-"}
+                                        <td className="p-1 md:px-6 md:py-4 bg-gray-50 bg-white text-center text-xl ">
+                                            {Array.isArray(subject.teachers) && subject.teachers.length > 0 ? subject.teachers.map((tech) => tech.teacher_first_name + " " + tech.teacher_last_name)
+                                                : "-"}
                                         </td>
                                     </tr>
                                 )) : (
                                     <tr>
-                                        <td colSpan="3" className="px-6 py-4 text-center text-xl text-gray-400 bg-white">
+                                        <td colSpan="3" className="p-1 md:px-6 md:py-4 text-center text-xl text-gray-400 bg-white">
                                             ไม่มีข้อมูลรายวิชา
                                         </td>
                                     </tr>
                                 )}
                             </tbody>
                         </table>
-
                     </div>
+
                 </div>
-            </div>
+           
         </div>
     )
 }

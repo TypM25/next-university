@@ -57,7 +57,7 @@ export default function TeacherReg() {
     }
 
     return (
-        <div className='flex justify-center items-center w-full h-full p-20'>
+        <div className='flex justify-center items-center w-full h-full p-10  md:p-20'>
             <form className='flex flex-col w-2/3 lg:w-[450px]'>
                 <label className='text-center mb-10 text-3xl font-semibold text-[#8E1616]'>ลงทะเบียนอาจารย์</label>
                 <p className='self-start font-semibold text-xl text-black/70'>รหัสผู้ใช้</p>

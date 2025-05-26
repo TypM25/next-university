@@ -53,7 +53,8 @@ export async function middleware(req) {
                     "/admin/user/userReg",
                     "/admin/user/userUpdate",
 
-                    "/admin/semester"
+                    "/admin/semester/semesterUpdate",
+                    "/admin/semester/semesterAll"
                 ];
                 if (adminAllowedPaths.includes(pathname)) {
                     return NextResponse.next(); // Allow access to correct pages for admin

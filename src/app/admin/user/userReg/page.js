@@ -40,13 +40,11 @@ export default function UserReg() {
         }
     }
 
-    function handleSelectRoles(e) {
-        const id = e.target.id
-        if (id === 'role') {
-            setRole(e.target.value)
-            console.log("เปลี่ยน role เป็น:", e.target.value);
-        }
+    //value คือค่าของkeyที่ชื่อvalueใน Autocomplete
+      function handleSelectRoles(event, value) {
+        setRole(value ? value.value : null); // value.value คือ ค่าวาลู่ในroles
     }
+ 
 
     async function handleSubmit(e) {
         e.preventDefault();

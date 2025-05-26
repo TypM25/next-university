@@ -13,9 +13,16 @@ export default function Evaluation() {
     const teacher_id = searchParams.get('teacher_id');
     const term_id = searchParams.get('term_id');
 
-    return (
-        <div>
-            <RadioEvaluation student_id={student_id} teacher_id={teacher_id} term_id={term_id} />
-        </div>
-    )
+    // console.log("searchParams :", searchParams)
+    // console.log("student_id :", student_id)
+    // console.log("teacher_id :", teacher_id)
+    // console.log("term_id :", term_id)
+
+    if (student_id && teacher_id && term_id) {
+        return (
+            <div className='mt-10'>
+                <RadioEvaluation student_id={student_id} teacher_id={teacher_id} term_id={term_id} />
+            </div>
+        )
+    }
 }

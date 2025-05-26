@@ -72,15 +72,18 @@ function Register() {
 
     return (
         <div className="w-screen h-screen flex justify-center items-center bg-[#FEF9E1]">
-            <div className='p-10% h-[70%] w-[80%] relative flex flex-col justify-center items-center shadow-xl shadow-yellow-500/50 rounded-[50px] bg-[#A31D1D] 
-            lg:w-[30%]
+            <div className='relative h-[70%] w-[70%] flex flex-col justify-center items-center rounded-[50px] bg-[#A31D1D] shadow-xl shadow-yellow-500/50 
+      lg:w-[30%] lg:h-[70%]
            motion-scale-in-[0.5] motion-opacity-in-[0%] motion-duration-[300ms] motion-ease-spring-bouncier'>
                 <img src="/img/hat2.png" alt="หมวก" className="absolute w-32 h-32 -top-17 
                     motion-preset-shake motion-duration-900" />
-                <h1 className='text-5xl text-[#EEEEEE] mb-15 font-bold '>
-                    ลงทะเบียน
-                </h1>
-                <form className='w-[70%] flex flex-col justify-center items-center'>
+
+                <form className='w-[60%] flex flex-col justify-center items-center
+                md:w-[60%]'>
+                    <h1 className='text-3xl text-[#EEEEEE] mb-10 font-bold z-6 whitespace-nowrap
+                    md:text-5xl md:mb-15'>
+                        ลงทะเบียน
+                    </h1>
                     <ul className="w-full flex flex-col gap-6">
                         <li >
                             <p className='self-start text-xl font-semibold text-[#E5D0AC]'>ชื่อผู้ใช้</p>
@@ -150,18 +153,18 @@ function Register() {
                             </div>
                         </div>
                     }
-                </form>
-                  <div className='w-[70%] gap-10 flex justify-between self-center mt-10
-                    lg:w-[50%]'>
-                            <button type="button" onClick={() => router.push('/login')} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#EEEEEE] rounded-full text-sm text-black/70 font-bold 
+                    <div className='w-full gap-10 flex justify-center self-center mt-10'>
+                        <button type="button" onClick={() => router.push('/login')} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#EEEEEE] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
                             md:text-lg
                             hover:bg-gray-400 hover:text-white' >
-                                ย้อนกลับ</button>
-                            <button type="submit" onClick={handleSubmit} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#F9CB43] rounded-full text-sm text-black/70 font-bold 
+                            ย้อนกลับ</button>
+                        <button type="submit" onClick={handleSubmit} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#F9CB43] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
                             md:text-lg
                             hover:bg-amber-400 hover:text-white'>
-                                ลงทะเบียน</button>
+                            ลงทะเบียน</button>
                     </div>
+                </form>
+
             </div>
         </div>
 

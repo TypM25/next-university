@@ -40,7 +40,7 @@ const BoardStudent = () => {
 
     }, []);
 
-    console.log(student)
+
     useEffect(() => {
         if (user && user.username) {
             async function fetchData() {
@@ -70,15 +70,17 @@ const BoardStudent = () => {
             fetchData();
         }
     }, [user])
+
+    console.log("--------------->", gpa)
     return (
         <>
-            <div name='student' className='w-auto h-100% flex flex-col items-center m-20 text-start'>
+            <div name='student' className='w-full h-full flex flex-col items-center text-start '>
                 <div className='w-full h-full flex flex-col justify-center items-center text-center'>
                     <p className='text-4xl font-bold mb-7'>นิสิต</p>
                     <div>
                         <UploadImage API_URL_IMAGE={API_URL_IMAGE} API_URL_UPLOAD={API_URL_UPLOAD} />
                     </div>
-                    <div className="">
+                    <div className="w-full">
                         <div className='flex flex-col justify-center h-auto'>
                             <div className='text-start w-fit '>
                                 <p className='text-2xl m-4'> รหัสนิสิต : {student?.student_id}</p>
@@ -86,30 +88,34 @@ const BoardStudent = () => {
                                 <p className='text-2xl m-4'> นามสกุล : {student?.student_last_name}</p>
                             </div>
                         </div>
-                        <div className="max-w-180">
-                            <TableContainer component={Paper} >
-                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell align="center">Term ID</TableCell>
-                                            <TableCell align="center">GPAX</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody >
-
-                                        <TableRow >
-                                            <TableCell align="center">{gpa?.term_id}</TableCell>
-                                            <TableCell align="center">{gpa?.GPA}</TableCell>
-                                        </TableRow>
-
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                        <div className='w-full h-auto overflow-y-auto max-h-[400px]
+                    md:flex md:justify-center md:w-full'>
+                            {gpa !== null &&
+                                <table className="w-full text-sm text-left text-gray-500">
+                                    <thead className="text-xs text-white uppercase bg-[#8E1616] text-center">
+                                        <tr>
+                                            <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">Term ID</th>
+                                            <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">GPA</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="border-b border-gray-200 dark:border-gray-300">
+                                            <td className="p-1 font-medium text-gray-900 whit espace-nowrap bg-white text-center 
+                                                md:text-xl">
+                                                {gpa.term_id}
+                                            </td>
+                                            <td className="p-1 text-center text-sm bg-gray-50 
+                                        md:px-6 md:py-4 md:text-xl ">
+                                                {gpa.GPA}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>}
                         </div>
                     </div>
                 </div>
             </div>
-    
+
 
         </>
 

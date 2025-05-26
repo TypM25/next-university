@@ -8,12 +8,14 @@ export default function SubjectUpdate() {
     const [editMode, setEditMode] = useState(false)
     const [createMode, setCreateMode] = useState(false)
     const [newSubjectName, setNewSubjectName] = useState("")
+    const [credits, setCredits] = useState("")
 
     const [error, setError] = useState(false);
     const [errMes, setErrMes] = useState("")
 
     const update_data = {
-        subject_name: newSubjectName
+        subject_name: newSubjectName,
+        credits: credits
     }
 
     const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/subject/${idSubject}`;
@@ -38,6 +40,9 @@ export default function SubjectUpdate() {
             setIdsubject(e.target.value)
         } else if (id === 'newSub') {
             setNewSubjectName(e.target.value)
+        }
+          else if (id === 'credits') {
+            setCredits(e.target.value)
         }
     }
 
@@ -109,11 +114,11 @@ export default function SubjectUpdate() {
     }, [idSubject])
 
     return (
-       <div className='w-[70%] h-[50%] px-10 py-20 flex flex-col justify-center items-center rounded-3xl lg:w-[50%]'>
+       <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl lg:w-[50%]'>
   <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขรายวิชา</p>
 
   <div className='w-full flex flex-col items-center'>
-    <div className='h-auto w-full flex flex-col gap-5 justify-center items-start lg:flex-row lg:gap-10'>
+    <div className='h-auto w-full flex flex-col gap-5 justify-center items-center md:items-start lg:flex-row lg:gap-10'>
       <p className='self-center text-lg font-semibold text-black/70'>รหัสวิชา :</p>
       <div>
         <input
@@ -185,6 +190,13 @@ export default function SubjectUpdate() {
         <p className='self-start'>ชื่อรายวิชาใหม่</p>
         <input
           id='newSub'
+          onChange={handleChange}
+          className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light'
+          type='text'
+        />
+        <p className='self-start'>หน่วยกิต</p>
+        <input
+          id='credits'
           onChange={handleChange}
           className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light'
           type='text'

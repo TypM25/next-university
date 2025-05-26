@@ -31,13 +31,15 @@ export default function GradeAll() {
   const API_URL_CREATE = `${process.env.NEXT_PUBLIC_API_URL}/teacher/create/multi/gradeDetail`;
 
   async function handleSubmit() {
-    try {
-      const response = await axios.post(API_URL_CREATE, answer)
-      setAnswer([])
-      alert(response.data.message)
-    }
-    catch (error) {
-      alert(error.response.data.message)
+    if (term_id !== undefined) {
+      try {
+        const response = await axios.post(API_URL_CREATE, answer)
+        setAnswer([])
+        alert(response.data.message)
+      }
+      catch (error) {
+        alert(error.response.data.message)
+      }
     }
   }
 
@@ -76,39 +78,44 @@ export default function GradeAll() {
     }
     fetchData()
   }, [])
-  console.log("students ==>", students)
+
   return (
-    <div>
+  <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center md:w-fit '>
+      <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขเกรด</p>
       {
         Array.isArray(students) && students.length > 0 ? (
           <>
-            <TableContainer component={Paper} >
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Student ID</TableCell>
-                    <TableCell align="center">First Name</TableCell>
-                    <TableCell align="center">Last Name</TableCell>
-                    <TableCell align="center">Grade</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody >
-                  {students?.map((row, rowIndex) =>
-                    <TableRow key={rowIndex}>
-                      <TableCell align="center">{row.student_id}</TableCell>
-                      <TableCell align="center">{row.student_first_name}</TableCell>
-                      <TableCell align="center">{row.student_last_name}</TableCell>
-                      <TableCell align="center">
-                        <input type="number" min={0} max={100} onChange={(e) => handleAnswerChange(row.student_id, e.target.value)}
-                          className="w-10 text-center border-b"
-                          defaultValue={row?.gradeDetails && row.gradeDetails.length > 0 ? row.gradeDetails[0].score : null}
-                        />
-                      </TableCell>
+            <div className='w-full h-auto overflow-y-auto max-h-[400px]
+                    md:flex md:justify-center'>
+              <TableContainer component={Paper} >
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="center">Student ID</TableCell>
+                      <TableCell align="center">First Name</TableCell>
+                      <TableCell align="center">Last Name</TableCell>
+                      <TableCell align="center">Grade</TableCell>
                     </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody >
+                    {students?.map((row, rowIndex) =>
+                      <TableRow key={rowIndex}>
+                        <TableCell align="center">{row.student_id}</TableCell>
+                        <TableCell align="center">{row.student_first_name}</TableCell>
+                        <TableCell align="center">{row.student_last_name}</TableCell>
+                        <TableCell align="center">
+                          <input type="number" min={0} max={100} onChange={(e) => handleAnswerChange(row.student_id, e.target.value)}
+                            className="w-10 text-center border-b"
+                            defaultValue={row?.gradeDetails && row.gradeDetails.length > 0 ? row.gradeDetails[0].score : null}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+
             <div className="w-full flex justify-center mt-10">
               <Button variant="contained" color="success" type="submit" onClick={handleSubmit}>
                 update

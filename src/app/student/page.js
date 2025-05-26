@@ -7,7 +7,7 @@ import BoardStudent from '@/components/boards/boardStudent';
 
 function Student() {
     return (
-        <div >
+        <div className='flex justify-center w-[70%] md:w-[60%] md:h-[70%] overflow-hidden'>
             <BoardStudent/>
         </div>
     )

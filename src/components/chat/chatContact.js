@@ -69,7 +69,7 @@ export default function ChatContact({ API_IMAGE, contacts }) {
                 : <ul className='w-full h-full flex flex-col flex-grow overflow-auto'>
                     {Array.isArray(contacts) && contacts.length > 0 ?
                         contacts.map((data, index) => {
-                            const image = imageList.find(img => img.user_id === data.user_id)
+                            const image = imageList?.find(img => img.user_id === data.user_id)
                             return (
                                 <li
                                     key={index}

@@ -89,11 +89,11 @@ export default function TeacherUpdate() {
     }, [idTeacher])
 
     return (
-        <div className='w-[70%] h-[50%] px-10 py-20 flex flex-col justify-center items-center rounded-3xl
+        <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl 
         lg:w-[50%]'>
             <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขข้อมูลนิสิต</p>
             <div className='w-full flex flex-col items-center'>
-                <div className='h-auto w-full flex flex-col gap-5 justify-center items-start 
+                <div className='h-auto w-full flex flex-col gap-5 justify-center items-center 
                 lg:flex-row lg:gap-10'>
                     <p className='self-center text-lg font-semibold text-black/70'>รหัสนิสิต :</p>
                     <div >

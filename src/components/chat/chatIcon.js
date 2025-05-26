@@ -52,7 +52,7 @@ export default function ChatIcon({ user_id, role }) {
 
         }
         catch (error) {
-            console.log(error.response.data.message)
+            console.log(error.response?.data?.message)
         }
     }
 

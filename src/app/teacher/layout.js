@@ -18,11 +18,11 @@ export default function TeachertLayout({ children }) {
   }, []);
   // console.log("------------------------",user.role)
   return (
-    <div className='relative min-h-screen w-screen bg-[#EAD196] bg-cover'>
+    <div className='relative min-h-screen w-screen bg-[#EAD196] overflow-auto'>
       <div className='fixed p-4 w-full z-50'>
         <TeacherNavbar />
       </div>
-      <div className='flex justify-center items-center min-h-screen w-screen py-28'>
+      <div className='flex justify-center items-center min-h-screen w-screen py-14 md:py-28'>
         {children}
          {user && <ChatIcon user_id={user.user_id} role={user.role[0]} />}
       </div>

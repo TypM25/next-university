@@ -52,7 +52,7 @@ export default function UploadImage({ API_URL_IMAGE, API_URL_UPLOAD }) {
                     <img key={index} src={`${process.env.NEXT_PUBLIC_API_URL}${data.url}`} className='w-[30%]' />
                 ))} */}
             {imageList ?
-                <img src={`${process.env.NEXT_PUBLIC_API_URL}${imageList.url}`} className='w-60 h-60 rounded-full object-cover' />
+                <img src={`${process.env.NEXT_PUBLIC_API_URL}${imageList.url}`} className='w-50 h-50 rounded-full object-cover md:w-60 md:h-60'/>
                 : <img src="/img/guest1.png" className='w-60 h-60 rounded-full object-cover' />}
             <div className='flex justify-center items-center gap-4'>
                 <div className="">

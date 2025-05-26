@@ -30,7 +30,6 @@ export default function ChatPage({ user_sender, user_receiver }) {
     setInput('');
   };
 
-
   useEffect(() => {
     if (!user_sender) return;
     socketRef.current = io('http://localhost:8000', {

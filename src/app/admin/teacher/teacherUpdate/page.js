@@ -89,13 +89,13 @@ export default function TeacherUpdate() {
     }, [idTeacher])
 
     return (
-        <div className='w-[70%] h-[50%] px-10 py-20 flex flex-col justify-center items-center rounded-3xl
-        lg:w-[50%]'>
-            <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขข้อมูลอาจารย์</p>
+     <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl
+        lg:w-[50%] lg:px-10'>
+            <p className='flex flex-col items-center text-3xl font-bold mb-10 text-[#8E1616]'>แก้ไขข้อมูลอาจารย์</p>
             <div className='w-full flex flex-col items-center'>
                 <div className='h-auto w-full flex flex-col gap-5 justify-center items-start 
             lg:flex-row lg:gap-10'>
-                    <p className='text-lg font-semibold text-black/70'>รหัสอาจารย์ :</p>
+                    <p className='text-xl font-semibold text-black/70'>รหัสอาจารย์ :</p>
                     <div >
                         <input id='id' onChange={handleChange} className='px-4 w-full h-9 border-b' />
                         {
@@ -116,14 +116,14 @@ export default function TeacherUpdate() {
                     <button onClick={clickDelete} className='w-auto px-6 py-2 mx-3 font-bold text-white rounded-full bg-[#A31D1D] hover:bg-[#D84040]'>ลบ</button>
                 </div>
 
-                <div className='w-full h-full py-10 px-10 lg:px-30'>
+                <div className='w-[60%] h-full flex flex-col py-10'>
                     <div className='flex mb-7'>
-                        <p className='text-lg mr-3 text-black/70'>ชื่อ : </p>
-                        <p className='self-center text-lg text-[#BB3E00]'>{data.teacher_first_name}</p>
+                        <p className='text-xl mr-3 text-black/70'>ชื่อ : </p>
+                        <p className='self-center text-xl text-[#BB3E00]'>{data.teacher_first_name}</p>
                     </div>
                     <div className='flex mb-7'>
-                        <p className='text-lg mr-3 text-black/70'>นามสกุล : </p>
-                        <p className='self-center text-lg text-[#BB3E00]'>{data.teacher_last_name}</p>
+                        <p className='text-xl mr-3 text-black/70'>นามสกุล : </p>
+                        <p className='self-center text-xl text-[#BB3E00]'>{data.teacher_last_name}</p>
                     </div>
                 </div>
 
