@@ -68,7 +68,7 @@ export default function StudentNavbar() {
 
   //  เมนูรายวิชา
   const subjectMenu = [
-    { name: "วิชาที่ลงทะเบียน", path: "/student/subject/subjectAll" },
+    { name: "วิชาที่ลงทะเบียน", path: `/student/subject/subjectAll`},
     ...(canReg ?
       [
         { name: "เพิ่ม/ถอนรายวิชา", path: "/student/subject/subjectUpdate" }

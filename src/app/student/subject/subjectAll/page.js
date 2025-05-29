@@ -5,8 +5,6 @@ import AuthService from '@/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 
-
-
 export default function SubjectAll() {
     const [idStudent, setIdStudent] = useState("")
     const [idTerm, setIdTerm] = useState("")
@@ -109,6 +107,10 @@ export default function SubjectAll() {
                                                         alert("คุณประเมินอาจารย์ท่านนี้เเล้ว")
                                                         return
                                                     }
+                                                    console.log("============================")
+                                                    console.log(idStudent)
+                                                    console.log(t.teacher_id)
+                                                    console.log(idTerm)
 
                                                     router.push(`/student/evaluation?student_id=${idStudent}&teacher_id=${t.teacher_id}&term_id=${idTerm}`)
                                                 }}

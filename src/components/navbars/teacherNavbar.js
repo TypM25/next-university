@@ -71,8 +71,7 @@ export default function TeacherNavbar() {
     router.push("/login");
   };
 
-  console.log("Nav TEACHERERERERERER termId ==>", termId)
-  console.log("Nav TEACHERERERERERER idSubject ==>", idSubject)
+
 
   return (
     <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg md:flex-row">
