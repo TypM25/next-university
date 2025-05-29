@@ -20,23 +20,25 @@ export default function SubjectStudent() {
 
     const [students, setStudents] = useState([])
     //ค้นหารายวิชาด้วยsubject_id
-    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`;
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await axios.get(API_URL)
-                setStudents(response.data.data.students)
-                console.log("student_subject : ", response.data.data.students)
-            }
-            catch (err) {
-                console.log(err.response.data.message)
-            }
+    async function fetchData() {
+        try {
+            const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`;
+            const response = await axios.get(API_URL)
+            setStudents(response.data.data.students)
+            console.log("student_subject : ", response.data.data.students)
         }
+        catch (err) {
+            console.log(err.response.data.message)
+        }
+    }
+
+    useEffect(() => {
+        if(subject_id)
         fetchData()
-    }, [])
-    
+    }, [subject_id])
+
     // console.log("students : ",students)
- 
+
     return (
         <div>
             {

@@ -57,7 +57,7 @@ export default function TeacherNavbar() {
 
   useEffect(() => {
     checkSemester();
-  },);
+  },[]);
 
   useEffect(() => {
     if (user && user?.user_id) {
