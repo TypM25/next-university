@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import LoadingMui from '../loadingMui';
+import LoadingMui from '@/components/loadingMui';
 import { Router } from 'next/router';
 
 // const inputData = {
