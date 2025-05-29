@@ -98,8 +98,8 @@ export async function middleware(req) {
                     "/teacher/subject/add",
                     "/teacher/subject/remove",
 
-                    "/teacher/grade/gradeCreate",
-                    "/teacher/grade/gradeAll",
+                 
+                    "/teacher/grade",
 
                 ];
                 if (teacherAllowedPaths.includes(pathname)) {

@@ -15,7 +15,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-export default function GradeAll() {
+export default function GradeComponent() {
   const searchParams = useSearchParams();
   const subject_id = searchParams.get('subject_id');
   const term_id = searchParams.get('term_id');

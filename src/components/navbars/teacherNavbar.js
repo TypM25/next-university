@@ -158,7 +158,7 @@ export default function TeacherNavbar() {
               onClick={() => {
                 {
                   idSubject && termId ?
-                    router.push(`/teacher/grade/gradeAll?subject_id=${idSubject}&term_id=${termId}`)
+                    router.push(`/teacher/grade?subject_id=${idSubject}&term_id=${termId}`)
                     :
                     console.log("Loading to grade all page.")
                 }
