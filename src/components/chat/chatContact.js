@@ -21,15 +21,6 @@ export default function ChatContact({ API_IMAGE, contacts }) {
 
     async function fetchData() {
         setId_User_Receivers(contacts.map((data) => data.user_id))
-        // try {
-        //     // const API_CONTACT = `${process.env.NEXT_PUBLIC_API_URL}/student/all/teacher`;
-        //     const response = await axios.post(API_CONTACT)
-        //     setTeacher(response.data.data)
-        //     setId_User_Receivers(response.data.data.map((data) => data.user_sender))
-        // }
-        // catch (error) {
-        //     console.log(error.response.data.message)
-        // }
     }
 
     useEffect(() => {
@@ -86,9 +77,14 @@ export default function ChatContact({ API_IMAGE, contacts }) {
                             )
                         })
                         :
-                        <div className='w-full h-full flex justify-center items-center'>
-                            <LoadingMui />
-                        </div>
+                        contacts?.length === 0 ?
+                            <div className='w-full h-full flex justify-center items-center text-gray-400 text-sm'>
+                                ไม่มีรายชื่อติดต่อ
+                            </div>
+                            :
+                            <div className='w-full h-full flex justify-center items-center'>
+                                <LoadingMui />
+                            </div>
                     }
                 </ul>
             }

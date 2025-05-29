@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Table from '@/components/all/table';
 import Filter from '@/components/all/filter';
+import { useDebounce } from 'use-debounce';
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/all/teacher`;
-const API_URL_SEARCH = `${process.env.NEXT_PUBLIC_API_URL}/admin/search/teacher`;
 
 const dropdown = [
     { value: "teacher_id", name: "teacher ID" },
@@ -18,62 +18,43 @@ const dropdown = [
 
 export default function TeacherAll() {
     const [data, setData] = useState([])
-    const [searchData, setSearchData] = useState("")
-    const [searchType, setSearchType] = useState("teacher_id")
-    const [sort, setSort] = useState("ASC")
     const [isLoading, setIsLoading] = useState(true)
-    const search = {
-        searchType: searchType,
-        searchData: searchData,
-        sort: sort
-    }
+    const [searchConfig, setSearchConfig] = useState({
+        searchData: "",
+        searchType: "teacher_id",
+        sort: "ASC"
+    });
+
+    const [debouncedSearchConfig] = useDebounce(searchConfig, 500);
 
     async function handleChange(e) {
-        const id = e.target.id
-        if (id === 'search') {
-            setSearchData(e.target.value)
+        const { name, value } = e.target
+        setSearchConfig((prev) => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    async function searchUser() {
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/admin/search/teacher`, debouncedSearchConfig)
+            setData(response.data.data)
+            console.log(response.data.data)
         }
+        catch (error) {
+            console.log("Error fetching.")
+        }
+        finally {
+            setIsLoading(false)
+        }
+
     }
 
-    async function handleDropdown(e) {
-        setSearchType(e.target.value)
-    }
-
-    async function handleRadio(e) {
-        setSort(e.target.value)
-    }
 
     useEffect(() => {
-        async function searchUser() {
-            try {
-                const response = await axios.post(API_URL_SEARCH, search)
-                setData(response.data.data)
-                console.log(response.data.data)
-            }
-            catch (error) {
-                console.log("Error fetching.")
-            }
-            finally {
-                setIsLoading(false)
-            }
-
-        }
         searchUser()
-    }, [searchData, searchType, sort])
+    }, [debouncedSearchConfig])
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         try {
-    //             const response = await axios.get(API_URL)
-    //             setData(response.data.data)
-    //             console.log(response.data.data)
-    //         }
-    //         catch (error) {
-    //             console.log("Error fetching.")
-    //         }
-    //     }
-    //     fetchData();
-    // }, [])
 
     return (
         <div className='flex flex-col w-full px-10 py-20 justify-center items-center md:w-[70%]'>
@@ -81,9 +62,7 @@ export default function TeacherAll() {
             <div className='w-full flex flex-col justify-center items-center md:w-full'>
                 <Filter
                     filter={dropdown}
-                    handleDropdown={handleDropdown}
                     handleChange={handleChange}
-                    handleRadio={handleRadio}
                 />
                 <div className="w-auto h-auto overflow-x-auto max-w-full max-h-[400px] 
                     md:flex md:justify-center">

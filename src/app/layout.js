@@ -15,9 +15,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="th" >
-      <body className={ibmPlexSansThai.className} >
-        {children}
+     <html lang="th">
+      <body className={`${ibmPlexSansThai.className} m-0 p-0`}>
+        <div className="w-screen h-screen overflow-y-auto box-border">
+          {children}
+        </div>
       </body>
     </html>
   )

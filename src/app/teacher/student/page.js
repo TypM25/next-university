@@ -19,7 +19,7 @@ export default function SubjectStudent() {
     const subject_id = searchParams.get('subject_id');
 
     const [students, setStudents] = useState([])
-
+    //ค้นหารายวิชาด้วยsubject_id
     const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`;
     useEffect(() => {
         async function fetchData() {
@@ -35,7 +35,7 @@ export default function SubjectStudent() {
         fetchData()
     }, [])
     
-    console.log("students : ",students)
+    // console.log("students : ",students)
  
     return (
         <div>

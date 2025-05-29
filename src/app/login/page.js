@@ -15,53 +15,42 @@ import ChatPage from '@/components/chat/chatpage'
 import { io } from 'socket.io-client';
 
 export default function Login() {
-
-  // const data = {
-  //   username: '',
-  //   password: ''
-  // }
-
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+
+  //set error-box
   const [error, setError] = useState(false)
   const [errMes, setErrMes] = useState("")
 
   const router = useRouter();
 
-
   async function handleSubmit(e) {
     e.preventDefault();
 
+    //ดักinput
     if (!username || !password) {
       setError(true)
       return setErrMes("กรุณากรอกข้อมูลให้ครบ")
     }
 
     try {
-      const user = await AuthService.login(username, password);
-
-      if (user) {
+      const accessToken = await AuthService.login(username, password);
+      if (accessToken) {
         setError(false)
-        const token = await AuthService.getToken();
-        const decoded = jwtDecode(token)
-
-        // console.log(userToken)
-        if (token) {
-          const showAdminBoard = decoded.role.includes("admin");
-          const showStudentBoard = decoded.role.includes("student");
-          const showTeacherBoard = decoded.role.includes("teacher");
-          // console.log("showAdminBoard :", showAdminBoard)
-          // console.log("showStudentBoard :", showStudentBoard)
-          if (showAdminBoard) {
-            return router.push('/admin');
-          }
-          else if (showStudentBoard) {
-            return router.push('/student');
-          }
-          else if (showTeacherBoard) {
-            return router.push('/teacher');
-          }
+        const decoded = jwtDecode(accessToken)
+        const showAdminBoard = decoded.role.includes("admin");
+        const showStudentBoard = decoded.role.includes("student");
+        const showTeacherBoard = decoded.role.includes("teacher");
+        if (showAdminBoard) {
+          return router.push('/admin');
         }
+        else if (showStudentBoard) {
+          return router.push('/student');
+        }
+        else if (showTeacherBoard) {
+          return router.push('/teacher');
+        }
+
         // router.push('/profile');
       }
 
@@ -87,9 +76,8 @@ export default function Login() {
   }
 
   useEffect(() => {
-    localStorage.removeItem("token");
-    Cookies.remove("accessToken");
-  }, [])
+    AuthService.logout();
+  }, []);
 
   return (
     <div className="w-screen h-screen  flex justify-center items-center bg-[#FEF9E1]">

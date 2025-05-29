@@ -3,10 +3,11 @@ import Cookies from "js-cookie"; // ✅ ใช้ js-cookie
 
 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/`;
 
-const register = async (username, password, role_name) => {
+const register = async (username, password, confirmPassword, role_name) => {
     return await axios.post(API_URL + "signup", {
         username,
         password,
+        confirmPassword,
         role_name: [role_name]
     })
 };
@@ -36,14 +37,14 @@ const getToken = () => {
     if (typeof window !== 'undefined') {
         const token = JSON.parse(localStorage.getItem("token"));
         if (token) {
-            axios.defaults.headers.common["x-access-token"] = token;
+            axios.defaults.headers.common["x-access-token"] = token; // ถ้ามี token ให้ส่งไปกับ header ทุก request
         }
         else {
-            delete axios.defaults.headers.common["x-access-token"];
+            delete axios.defaults.headers.common["x-access-token"];// ถ้าไม่มี ให้ลบ header ออก
         }
         return token;
     }
-    return null;
+    return null; //ถ้าไม่อยู่ในclient return null
 };
 
 const AuthService = {

@@ -3,35 +3,30 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 export default function EnrollemntUpdate() {
+  const [term, setTerm] = useState("")
   const [termId, setTermId] = useState("")
   const [termName, setTermName] = useState("")
   const [dateStart, setDateStart] = useState("")
   const [dateEnd, setDateEnd] = useState("")
 
   const [newTermId, setnewTermId] = useState("")
-  // const [newName, setNewName] = useState("")
-  // const [newDateStart, setNewDateStart] = useState("")
-  // const [newDateEnd, setNewDateEnd] = useState("")
 
-  const [data, setData] = useState("")
+
   const [editMode, setEditMode] = useState(false)
   const [createMode, setCreateMode] = useState(false)
+  //Error message box
   const [error, setError] = useState(false);
   const [errMes, setErrMes] = useState("")
 
+  //ข้อมูลส่งเพื่ออัพเดท
   const update_data = {
-    id: termId,
     term_id: newTermId,
     term_name: termName,
     start_date: dateStart ? new Date(dateStart).toISOString() : null,
     end_date: dateEnd ? new Date(dateEnd).toISOString() : null
   }
 
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/semester`;
-  const API_URL_CREATE = `${process.env.NEXT_PUBLIC_API_URL}/admin/create/semester`;
-  const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/semester`;
-  const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/semester`;
-
+  //กำหนดbox สร้าง/แก้ไข
   function setMode(e) {
     const id = e.target.id
     if (id === 'create') {
@@ -43,34 +38,20 @@ export default function EnrollemntUpdate() {
     }
   }
 
-  function handleChange(e) {
-    const id = e.target.id
-    if (id === 'term_id') {
-      setTermId(e.target.value)
-    }
-    else if (id === 'new_term_id') {
-      setnewTermId(e.target.value)
-    } else if (id === 'term_name') {
-      setTermName(e.target.value)
-    }
-    else if (id === 'date_start') {
-      setDateStart(e.target.value)
-    }
-    else if (id === 'date_end') {
-      setDateEnd(e.target.value)
-    }
-  }
-
+  //แก้ไขเทอมการศึกษา
   async function clickConfirmEdit(e) {
     e.preventDefault();
 
     try {
+      //สร้างเทอมการศึกษา
+      const API_URL_CREATE = `${process.env.NEXT_PUBLIC_API_URL}/admin/create/semester`;
+      //อัพเดทเทอมการศึกษา
+      const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/semester`;
       const Link = createMode ? API_URL_CREATE : API_URL_UPD
       const response = createMode
         ? await axios.post(Link, { term_id: parseInt(newTermId), start_date: dateStart, end_date: dateEnd })
-        : await axios.put(Link, update_data)
+        : await axios.put(Link, { id: termId, ...update_data })
 
-      console.log("termId : ", termId)
       setError(false)
       alert("สร้างเทอมการศึกษาสำเร็จ")
     } catch (err) {
@@ -79,7 +60,7 @@ export default function EnrollemntUpdate() {
     }
   }
 
-
+  //ลบเทอมการศึกษา
   async function clickDelete() {
     if (termId === '') {
       setError(true)
@@ -88,8 +69,10 @@ export default function EnrollemntUpdate() {
     }
 
     try {
+      //ลบเทอมการศึกษา
+      const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/semester`;
       const response = await axios.delete(API_URL_DEL, { data: { term_id: termId } })
-      setData('')
+      setTerm('')
       setError(false)
       alert(response.data.message)
     } catch (err) {
@@ -97,26 +80,34 @@ export default function EnrollemntUpdate() {
       setErrMes(err.response?.data?.message)
     }
   }
+  
+  //ค้นหาเทอมการศึกษา
+  async function clickFind() {
+    if (!termId) return
+    if (termId === '') {
+      setError(true)
+      setErrMes("กรุณากรอกรหัสเทอม")
+      return;
+    }
+    try {
+      const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/semester`;
+      const response = await axios.post(API_URL, { term_id: termId })
+      
+      setTerm(response.data.data)
+      // setnewTermId(response.data.data.term_id)
+      // setTermName(response.data.data.term_name)
+      // setDateStart(response.data.data.start_date)
+      // setDateEnd(response.data.data.end_date)
+
+      setError(false)
+      setErrMes("")
+    } catch (error) {
+      setError(true)
+      setErrMes(error.response?.data?.message)
+    }
+  }
 
   useEffect(() => {
-    async function clickFind() {
-      if (!termId) return
-      if (termId === '') {
-        setError(true)
-        setErrMes("กรุณากรอกรหัสนิสิต")
-        return;
-      }
-      try {
-        const response = await axios.post(API_URL, { term_id: termId })
-        // console.log(response.data.data)
-        setData(response.data.data)
-        setError(false)
-        setErrMes("")
-      } catch (error) {
-        setError(true)
-        setErrMes(error.response?.data?.message)
-      }
-    }
     clickFind()
     if (!termId) return;
   }, [termId])
@@ -129,7 +120,7 @@ export default function EnrollemntUpdate() {
         <div className='h-auto w-full flex flex-col gap-5 justify-center items-center text-center lg:flex-row lg:gap-10'>
           <p className='self-center text-lg font-semibold text-black/70'>รหัสเทอม :</p>
           <div>
-            <input id='term_id' onChange={handleChange} className='px-4 w-full h-9 border-b' />
+            <input id='term_id' onChange={(e) => setTermId(e.target.value)} className='px-4 w-full h-9 border-b' />
             {error && (
               <div
                 className='flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300'
@@ -154,7 +145,7 @@ export default function EnrollemntUpdate() {
         <div className='w-full h-full py-10 px-10 lg:px-30'>
           <div className='flex mb-7'>
             <p className='text-lg mr-3 text-black/70'>ชื่อเทอม : </p>
-            <p className='self-center text-lg text-[#BB3E00]'>{data.term_name}</p>
+            <p className='self-center text-lg text-[#BB3E00]'>{term.term_name}</p>
           </div>
         </div>
 
@@ -165,20 +156,20 @@ export default function EnrollemntUpdate() {
             </p>
 
             <p className='self-start mt-5'>รหัสเทอมใหม่</p>
-            <input id='new_term_id' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
+            <input id='new_term_id'  onChange={(e) => setnewTermId(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
 
             {editMode && (
               <>
                 <p className='self-start mt-5'>ชื่อเทอมการศึกษาใหม่</p>
-                <input id='term_name' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
+                <input id='term_name' onChange={(e) => setTermName(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
               </>
             )}
 
             <p className='self-start mt-5'>วันเริ่มลงทะเบียน</p>
-            <input id='date_start' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='datetime-local' step="1" />
+            <input id='date_start' onChange={(e) => setDateStart(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='datetime-local' step="1" />
 
             <p className='self-start mt-5'>วันปิดลงทะเบียน</p>
-            <input id='date_end' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='datetime-local' step="1" />
+            <input id='date_end' onChange={(e) => setDateEnd(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='datetime-local' step="1" />
 
             <button onClick={clickConfirmEdit} className='self-center w-20 py-2 mx-3 font-bold text-black/70 rounded-full bg-gray-400 hover:bg-gray-500'>
               ยืนยัน

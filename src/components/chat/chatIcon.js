@@ -92,10 +92,10 @@ export default function ChatIcon({ user_id, role }) {
         formatData();
     }, [students, teachers])
 
-    console.log("teachers : ", teachers)
-    console.log("students : ", students)
-    console.log("newData : ", newData)
-    console.log("idSub : ", idSub)
+    // console.log("teachers : ", teachers)
+    // console.log("students : ", students)
+    // console.log("newData : ", newData)
+    // console.log("idSub : ", idSub)
 
 
 

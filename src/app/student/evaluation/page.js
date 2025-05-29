@@ -8,16 +8,13 @@ import { useSearchParams } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 
 export default function Evaluation() {
+    //อ่านค่าparamsที่ส่งมา
     const searchParams = useSearchParams();
     const student_id = searchParams.get('student_id');
     const teacher_id = searchParams.get('teacher_id');
     const term_id = searchParams.get('term_id');
 
-    // console.log("searchParams :", searchParams)
-    // console.log("student_id :", student_id)
-    // console.log("teacher_id :", teacher_id)
-    // console.log("term_id :", term_id)
-
+    //ถ้ามีค่าเเล้ว
     if (student_id && teacher_id && term_id) {
         return (
             <div className='mt-10'>

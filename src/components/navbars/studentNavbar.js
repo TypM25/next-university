@@ -23,35 +23,42 @@ export default function StudentNavbar() {
     }
   }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await axios.get(API_URL_SEMESTER);
-        setCanReg(res.data.isOpen);
-        console.log("formnavbar:", res.data.message);
-      } catch (err) {
-        console.error(err?.response?.data?.message || err.message);
-      }
+  async function fetchCheckSemester() {
+    try {
+      const res = await axios.get(API_URL_SEMESTER);
+      setCanReg(res.data.isOpen);
+      console.log("formnavbar:", res.data.message);
+    } catch (err) {
+      console.error(err?.response?.data?.message || err.message);
+    }
+  }
 
-      if (user && user.user_id) {
-        try {
-          const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`
-          );
-          setStudent(res.data.data);
-        } catch (err) {
-          if (err.response?.status === 404) {
-            setStudent(null);
-            console.log("ยังไม่ได้ลงทะเบียนนิสิต");
-          }
-          else {
-            console.error("Error fetching student:", err);
-          }
-        }
+  async function fetchData() {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`
+      );
+      setStudent(res.data.data);
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setStudent(null);
+        console.log("ยังไม่ได้ลงทะเบียนนิสิต");
+      }
+      else {
+        console.error("Error fetching student:", err);
       }
     }
 
-    if (user?.user_id) fetchData();
+  }
+
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchCheckSemester()
+      if (user && user?.user_id) {
+        await fetchData()
+      };
+    }
+    fetch()
   }, [user]);
 
   const logOut = () => {
@@ -59,10 +66,13 @@ export default function StudentNavbar() {
     router.push("/login");
   };
 
+  //  เมนูรายวิชา
   const subjectMenu = [
     { name: "วิชาที่ลงทะเบียน", path: "/student/subject/subjectAll" },
-    ...(canReg ? 
-      [{ name: "เพิ่ม/ถอนรายวิชา", path: "/student/subject/subjectUpdate" }]
+    ...(canReg ?
+      [
+        { name: "เพิ่ม/ถอนรายวิชา", path: "/student/subject/subjectUpdate" }
+      ]
       : []),
   ];
 

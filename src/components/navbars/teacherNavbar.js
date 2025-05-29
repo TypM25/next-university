@@ -12,6 +12,7 @@ export default function TeacherNavbar() {
   const router = useRouter();
   const [user, setUser] = useState({});
   const [teacher, setTeacher] = useState(null);
+  const [idSubject, setIdSubject] = useState();
   const [termId, setTermId] = useState("");
   const [isOpen, setIsOpen] = useState(false); // navbar mobile toggle
   const [dropdownOpen, setDropdownOpen] = useState(null); // dropdown toggle
@@ -23,39 +24,46 @@ export default function TeacherNavbar() {
     }
   }, []);
 
-  useEffect(() => {
-    async function fetchData() {
-      // เช็ค semester
-      try {
-        const res = await axios.get(API_URL_SEMESTER);
-        if (res.data.isOpen) {
-          setTermId(res.data.data.term_id);
-        } else {
-          console.log(res.data.message);
-        }
-      } catch (error) {
-        console.error(error?.response?.data?.message || error.message);
+  async function checkSemester() {
+    // เช็ค semester เก็บtermId
+    try {
+      const res = await axios.get(API_URL_SEMESTER);
+      if (res.data.isOpen === true) {
+        setTermId(res.data.data.term_id);
+      } else {
+        console.log(res.data.message);
       }
+    } catch (error) {
+      console.error(error?.response?.data?.message || error.message);
+    }
+  }
 
-      // ดึงข้อมูล teacher
-      if (user && user.user_id) {
-        try {
-          const res = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`
-          );
-          setTeacher(res.data.data);
-        } catch (err) {
-          if (err.response?.status === 404) {
-            setTeacher(null);
-            console.log("ยังไม่ได้ลงทะเบียนเป็นอาจารย์");
-          } else {
-            console.error("Error fetching teacher:", err);
-          }
-        }
+  async function fetchData() {
+    // ดึงข้อมูล teacher
+    try {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`
+      );
+      setTeacher(res.data.data);
+      setIdSubject(res.data.data.subject_id)
+    } catch (err) {
+      if (err.response?.status === 404) {
+        setTeacher(null);
+        console.log("ยังไม่ได้ลงทะเบียนเป็นอาจารย์");
+      } else {
+        console.error("Error fetching teacher:", err);
       }
     }
+  }
 
-    if (user?.user_id) fetchData();
+  useEffect(() => {
+    checkSemester();
+  },);
+
+  useEffect(() => {
+    if (user && user?.user_id) {
+      console.log("fetch new..")
+      fetchData();
+    }
   }, [user]);
 
   const logOut = () => {
@@ -63,10 +71,8 @@ export default function TeacherNavbar() {
     router.push("/login");
   };
 
-  if (isOpen === false) {
-
-  }
   console.log("Nav TEACHERERERERERER termId ==>", termId)
+  console.log("Nav TEACHERERERERERER idSubject ==>", idSubject)
 
   return (
     <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg md:flex-row">
@@ -127,13 +133,22 @@ export default function TeacherNavbar() {
                     แก้ไขรายวิชา
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href={`/teacher/student?subject_id=${teacher?.subject_id}`}
-                    className="block text-xl px-4 py-2 hover:bg-gray-100"
+                <li className=" hover:bg-gray-100">
+                  <button
+                    onClick={() => {
+                      {
+                        idSubject ?
+                          router.push(`/teacher/student?subject_id=${idSubject}`)
+                          :
+                          console.log("Loading to student all page.")
+
+                      }
+                    }}
+                    className="block text-xl px-4 py-2"
                   >
                     นิสิตทั้งหมด
-                  </Link>
+                  </button>
+
                 </li>
               </ul>
             </div>
@@ -142,10 +157,11 @@ export default function TeacherNavbar() {
           <li>
             <button
               onClick={() => {
-                if (teacher?.subject_id && termId) {
-                  router.push(`/teacher/grade/gradeAll?subject_id=${teacher.subject_id}&term_id=${termId}`)
-                } else {
-                  alert("กรุณารอโหลดข้อมูลให้ครบก่อน");
+                {
+                  idSubject && termId ?
+                    router.push(`/teacher/grade/gradeAll?subject_id=${idSubject}&term_id=${termId}`)
+                    :
+                    console.log("Loading to grade all page.")
                 }
               }}
               className="text-xl md:text-2xl hover:text-white/70"

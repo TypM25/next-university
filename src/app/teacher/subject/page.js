@@ -3,44 +3,24 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import AuthService from '@/services/auth.service';
 import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/router';
 
 export default function AddSubject() {
     const [user, setUser] = useState("")
-    const [idSubject, setIdsubject] = useState(0)
+    const [idSubject, setIdSubject] = useState(0)
     const [idTeacher, setIdTeacher] = useState(0)
 
     const [data, setData] = useState("")
-    const [editMode, setEditMode] = useState(false)
-    const [createMode, setCreateMode] = useState(false)
-    const [newSubjectName, setNewSubjectName] = useState("")
 
     const [error, setError] = useState(false);
     const [errMes, setErrMes] = useState("")
 
-    const send_data =
-    {
-        teacher_id: idTeacher,
-        subject_id: idSubject
-    }
-
-
-    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${idSubject}`;
-    const API_URL_FIND = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
-    const API_URL_ADD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/add/subject/${idTeacher}/${idSubject}`;
-    const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
-    const API_URL_REMOV = `${process.env.NEXT_PUBLIC_API_URL}/teacher/remove/subject/${idTeacher}/${idSubject}`;
-    // const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/update/subject/${idSubject}`;
-
-
-    function handleChange(e) {
-        const id = e.target.id
-        if (id === 'id') {
-            setIdsubject(e.target.value)
-        } else if (id === 'newSub') {
-            setNewSubjectName(e.target.value)
-        }
-    }
-
+    // function handleChange(e) {
+    //     const id = e.target.id
+    //     if (id === 'id') {
+    //         setIdSubject(e.target.value)
+    //     } 
+    // }
 
     async function clickAdd(e) {
         e.preventDefault();
@@ -52,13 +32,17 @@ export default function AddSubject() {
         }
 
         try {
-            // const Link = API_URL_ADD 
+            const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
             const res_check = await axios.post(API_URL_CHECK)
-            if (!res_check.status === 200) {
+            if (!res_check.data.status_code === 200) {
+                return alert(response.data.message)
+                
+            }
+            const API_URL_ADD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/add/subject/${idTeacher}/${idSubject}`;
+            const response = await axios.post(API_URL_ADD)
+            if (!response.data.status_code === 200) {
                 return alert(response.data.message)
             }
-
-            const response = await axios.post(API_URL_ADD)
             setError(false)
             alert(response.data.message)
 
@@ -66,6 +50,7 @@ export default function AddSubject() {
             setError(true)
             setErrMes(err.response.data?.message)
         }
+       
     }
 
     async function clickRemove() {
@@ -75,12 +60,14 @@ export default function AddSubject() {
             return;
         }
         try {
+            const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
             await axios.post(API_URL_CHECK)
             //ยังไม่ลงทะเบียน
             setErrMes("คุณยังไม่ได้ลงทะเบียนวิชานี้")
 
         } catch (err) {
             if (err.response?.status === 409) {
+                const API_URL_REMOV = `${process.env.NEXT_PUBLIC_API_URL}/teacher/remove/subject/${idTeacher}/${idSubject}`;
                 const response = await axios.delete(API_URL_REMOV)
                 setData('')
                 setError(false)
@@ -112,6 +99,8 @@ export default function AddSubject() {
                 return;
             }
             try {
+                const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${idSubject}`;
+                const API_URL_FIND = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
                 const res_sub = await axios.get(API_URL)
                 const res_teacher = await axios.get(API_URL_FIND)
 
@@ -139,7 +128,7 @@ export default function AddSubject() {
                     <div>
                         <input
                             id='id'
-                            onChange={handleChange}
+                            onChange={(e) => setIdSubject(e.target.value)}
                             className='px-4 w-full h-9 border-b rounded-none'
                         />
                         {error && (
@@ -188,26 +177,6 @@ export default function AddSubject() {
                     </div>
                 </div>
 
-                {(editMode || createMode) && (
-                    <div className='flex flex-col p-5 w-[80%] bg-gray-100 rounded-lg lg:p-10'>
-                        <p className='mb-5 self-start font-semibold'>
-                            {editMode ? 'แก้ไขข้อมูลรายวิชา' : 'เพิ่มรายวิชา'}
-                        </p>
-                        <p className='self-start mt-5'>ชื่อรายวิชาใหม่</p>
-                        <input
-                            id='newSub'
-                            onChange={handleChange}
-                            className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light'
-                            type='text'
-                        />
-                        <button
-                            onClick={clickAdd}
-                            className='self-center w-20 py-2 mx-3 font-bold text-black/70 rounded-full bg-gray-400 hover:bg-gray-500'
-                        >
-                            ยืนยัน
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
 

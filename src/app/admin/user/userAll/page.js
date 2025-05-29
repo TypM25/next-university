@@ -26,40 +26,26 @@ const dropdown = [
 
 export default function UserAll() {
     const [data, setData] = useState([])
-    const [searchData, setSearchData] = useState("")
-    const [searchType, setSearchType] = useState("user_id")
-    const [sort, setSort] = useState("ASC")
     const [isLoading, setIsLoading] = useState(true)
+const [searchConfig, setSearchConfig] = useState({
+        searchData: "",
+        searchType: "user_id",
+        sort: "ASC"
+    });
 
-    const [debouncedSearchData] = useDebounce(searchData, 500);
-    const [debouncedSearchType] = useDebounce(searchType, 500);
-    const [debouncedSort] = useDebounce(sort, 500);
-    const payload = {
-        searchData: debouncedSearchData,
-        searchType: debouncedSearchType,
-        sort: debouncedSort
-    };
-
-
+    const [debouncedSearchConfig] = useDebounce(searchConfig, 500);
 
     async function handleChange(e) {
-        const id = e.target.id
-        if (id === 'search') {
-            setSearchData(e.target.value)
-        }
-    }
-
-    async function handleDropdown(e) {
-        setSearchType(e.target.value)
-    }
-
-    async function handleRadio(e) {
-        setSort(e.target.value)
+        const {name, value} = e.target
+        setSearchConfig((prev) => ({
+            ...prev,
+            [name]: value
+        }))
     }
 
     async function searchUser() {
         try {
-            const response = await axios.post(API_URL_SEARCH, payload)
+            const response = await axios.post(API_URL_SEARCH, debouncedSearchConfig)
             setData(response.data.data)
             console.log(response.data.data)
         }
@@ -74,7 +60,7 @@ export default function UserAll() {
 
     useEffect(() => {
         searchUser()
-    }, [debouncedSearchData, debouncedSearchType, debouncedSort]);
+    }, [debouncedSearchConfig]);
 
     return (
         <div className="flex flex-col w-screen px-10 py-20 justify-center items-center ">
@@ -82,9 +68,7 @@ export default function UserAll() {
             <div className="w-full flex flex-col justify-center items-center md:w-fit">
                 <Filter
                     filter={dropdown}
-                    handleDropdown={handleDropdown}
                     handleChange={handleChange}
-                    handleRadio={handleRadio}
                 />
 
                 {isLoading ?
@@ -126,7 +110,7 @@ export default function UserAll() {
                                         : (
                                             <tr>
                                                 <td colSpan="4" className="px-6 py-6 text-center text-lg text-gray-400 bg-gray-100">
-                                                    ไม่มีข้อมูลรายวิชา
+                                                    ไม่มีข้อมูล
                                                 </td>
                                             </tr>
                                         )}

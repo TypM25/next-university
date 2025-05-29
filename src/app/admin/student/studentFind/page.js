@@ -13,8 +13,6 @@ export default function StudentFind() {
     const [error, setError] = useState(false)
     const [errMes, setErrMes] = useState("")
 
-
-
     function handleChange(e) {
         const id = e.target.id
         if (id === 'id') {
@@ -91,7 +89,7 @@ export default function StudentFind() {
                     <div className='flex flex-col mb-7 '>
                         <p className='text-xl text-xl mb-10 text-black/70'>วิชาที่ลงเรียน : </p>
 
-                        <table className='inline'>
+                        <table className='block'>
                             <thead className=" text-xs text-white bg-[#8E1616]">
                                 <tr>
                                     <th scope="col" className="text-lg p-1 md:px-6 md:py-3">รหัสรายวิชา</th>
@@ -116,7 +114,7 @@ export default function StudentFind() {
                                 )) : (
                                     <tr>
                                         <td colSpan="3" className="p-1 md:px-6 md:py-4 text-center text-xl text-gray-400 bg-white">
-                                            ไม่มีข้อมูลรายวิชา
+                                            ไม่มีข้อมูล
                                         </td>
                                     </tr>
                                 )}

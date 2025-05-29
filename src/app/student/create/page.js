@@ -5,9 +5,6 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios'
 import AuthService from '@/services/auth.service'
 
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL + "/student/create";
-
 export default function CreateStudent() {
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
@@ -31,19 +28,17 @@ export default function CreateStudent() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            //เรียกtoken เพื่อใส่header
-            // AuthService.getToken();
-            const response = await axios.post(API_URL, data);
-
+            //สร้างนิสิต
+            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/student/create", data);
             console.log(response.message)
             if (response.status === 200) {
                 alert(response.data.message)
                 router.push('/student')
 
+                // บังคับโหลดหน้าใหม่
                 setTimeout(() => {
-                    window.location.reload(); // บังคับโหลดหน้าใหม่
+                    window.location.reload(); 
                 }, 100);
-
             }
         }
         catch (error) {

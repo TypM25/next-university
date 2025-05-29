@@ -3,10 +3,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
-import AuthService from '@/services/auth.service'
 
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL + "/teacher/create";
 
 export default function CreateTeacher() {
     const [firstname, setFirstname] = useState("")
@@ -28,18 +25,18 @@ export default function CreateTeacher() {
         }
     }
 
+    
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            //เรียกtoken เพื่อใส่header
-            // AuthService.getToken();
-            const response = await axios.post(API_URL, data);
-
+            //ลงทะเบียนอาจารย์
+            const response = await axios.post(process.env.NEXT_PUBLIC_API_URL + "/teacher/create", data);
             console.log(response.message)
             if (response.status === 200) {
                 alert(response.data.message)
-                router.push('/student')
+                router.push('/teacher')
 
+                //รีเฟรช
                 setTimeout(() => {
                     window.location.reload(); // บังคับโหลดหน้าใหม่
                 }, 100);

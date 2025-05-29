@@ -15,8 +15,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-
-
 export default function GradeAll() {
   const searchParams = useSearchParams();
   const subject_id = searchParams.get('subject_id');
@@ -25,32 +23,16 @@ export default function GradeAll() {
   const [students, setStudents] = useState([])
   const [credits, setCredits] = useState("")
   const [answer, setAnswer] = useState([])
-  const [value, setValue] = useState("")
-
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`;
-  const API_URL_CREATE = `${process.env.NEXT_PUBLIC_API_URL}/teacher/create/multi/gradeDetail`;
-
-  async function handleSubmit() {
-    if (term_id !== undefined) {
-      try {
-        const response = await axios.post(API_URL_CREATE, answer)
-        setAnswer([])
-        alert(response.data.message)
-      }
-      catch (error) {
-        alert(error.response.data.message)
-      }
-    }
-  }
 
   const handleAnswerChange = (student_id, score) => {
     setAnswer((prevAnswers) => {
-      // ลบคำตอบเดิมของคำถามนั้นออก
-      const updated = prevAnswers.filter(ans => ans.student_id !== student_id);
-      // ใส่คำตอบใหม่
+      //ฟิลเตอร์ลบข้อมูล"เดิม"ของนิสิตที่จะ"แก้ไข"ออก
+      //ป้องกันการแก้ไข2รอบ
+      const update_data = prevAnswers.filter(ans => ans.student_id !== student_id);
       return [
-        ...updated,
+        ...update_data,
         {
+          //ใส่คำตอบของนิสิตคนนั้นใหม่
           student_id: Number(student_id),
           subject_id: Number(subject_id),
           term_id: Number(term_id),
@@ -61,26 +43,39 @@ export default function GradeAll() {
     });
   };
 
+  async function fetchData() {
+    try {
+      //หาข้อมูลรายวิชาด้วย subject_id เพื่อเเสดงในตาราง
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`)
+      setStudents(response?.data?.data?.students)
+      setCredits(response?.data?.data?.credits)
 
-  useEffect(() => {
-    async function fetchData() {
+    }
+    catch (err) {
+      console.log(err.response.data.message)
+    }
+  }
+
+  async function handleSubmit() {
+    if (term_id !== undefined) {
       try {
-        const response = await axios.get(API_URL)
-
-        setStudents(response?.data?.data?.students)
-        setCredits(response?.data?.data?.credits)
-
+        //สร้างเกรดได้แบบนิสิตหลายคน
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/create/multi/gradeDetail`, answer)
+        setAnswer([])
+        alert(response.data.message)
       }
-      catch (err) {
-        console.log(err.response.data.message)
-
+      catch (error) {
+        alert(error.response.data.message)
       }
     }
+  }
+
+  useEffect(() => {
     fetchData()
   }, [])
 
   return (
-  <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center md:w-fit '>
+    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center md:w-fit '>
       <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขเกรด</p>
       {
         Array.isArray(students) && students.length > 0 ? (

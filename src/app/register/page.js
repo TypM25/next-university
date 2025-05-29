@@ -13,6 +13,7 @@ function Register() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
     const [role, setRole] = useState(null)
+
     const [error, setError] = useState(false)
     const [errMes, setErrMes] = useState("")
 
@@ -44,17 +45,9 @@ function Register() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if (!username || !password || !confirmPassword) {
-            setError(true)
-            return setErrMes("กรุณากรอกข้อมูลให้ครบ")
-        }
-        if (password != confirmPassword) {
-            setError(true)
-            return setErrMes('รหัสผ่านไม่ตรงกัน')
-        }
 
         try {
-            const response = await AuthService.register(username, password, role);
+            const response = await AuthService.register(username, password, confirmPassword, role);
             if (response) {
                 setError(false)
                 alert("Register success!")

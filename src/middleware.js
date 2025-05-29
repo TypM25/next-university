@@ -19,7 +19,6 @@ export async function middleware(req) {
         }
 
         const decoded = jwtDecode(token);
-        console.log("Role : ..............." + decoded.role)
         const roleUser = decoded.role;
         // console.log(roleUser)
         const { pathname } = req.nextUrl;

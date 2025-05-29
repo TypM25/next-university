@@ -4,21 +4,6 @@ import axios from "axios";
 import AuthService from "@/services/auth.service";
 import { jwtDecode } from "jwt-decode";
 import UploadImage from "../uploadImage";
-import ChatPage from "../chat/chatpage";
-
-import LoadingMui from '@/components/loadingMui'
-import { Button } from '@mui/material';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-
-
-
 
 const BoardStudent = () => {
     const [idStudent, setIdStudent] = useState("")
@@ -30,7 +15,6 @@ const BoardStudent = () => {
     const API_URL_IMAGE = `${process.env.NEXT_PUBLIC_API_URL}/student/find/files`;
     const API_URL_UPLOAD = `${process.env.NEXT_PUBLIC_API_URL}/student/upload`;
 
-
     useEffect(() => {
         const token = AuthService.getToken();
         if (token) {
@@ -40,33 +24,30 @@ const BoardStudent = () => {
 
     }, []);
 
+    async function fetchData() {
+        console.log("username", user.username)
+        try {
+            const stud_data = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`);
+            const studentId = stud_data.data.data.student_id;
+            setIdStudent(studentId);
+            setStudent(stud_data.data.data);
+
+            const gpa_data = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/gpa/${studentId}`);
+            setGpa(gpa_data.data.data);
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                // ถ้ายังไม่ลงทะเบียนก็ไม่ต้องตั้งค่า teacher
+                console.log("ยังไม่ได้ลงทะเบียนนิสิต");
+                setStudent(null);
+            } else {
+                console.error("Error fetching teacher:", error);
+            }
+        }
+    }
+
 
     useEffect(() => {
         if (user && user.username) {
-            async function fetchData() {
-                console.log("username", user.username)
-                try {
-                    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`;
-                    const stud_data = await axios.get(apiUrl);
-
-                    const studentId = stud_data.data.data.student_id;
-                    setIdStudent(studentId);
-                    setStudent(stud_data.data.data);
-
-                    const gpaUrl = `${process.env.NEXT_PUBLIC_API_URL}/student/gpa/${studentId}`;
-                    const gpa_data = await axios.get(gpaUrl);
-                    setGpa(gpa_data.data.data);
-                } catch (error) {
-                    if (error.response && error.response.status === 404) {
-                        // ถ้ายังไม่ลงทะเบียนก็ไม่ต้องตั้งค่า teacher
-                        console.log("ยังไม่ได้ลงทะเบียนนิสิต");
-                        setStudent(null);
-                    } else {
-                        console.error("Error fetching teacher:", error);
-                    }
-                }
-            }
-
             fetchData();
         }
     }, [user])
