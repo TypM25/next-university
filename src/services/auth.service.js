@@ -13,7 +13,7 @@ const register = async (username, password, confirmPassword, role_name) => {
 };
 
 const login = async (username, password) => {
-    return await axios.post(API_URL + "signin", { username, password, })
+    return await axios.post(API_URL + "signin", { username: username, password: password, })
         .then((response) => {
             if (response.data.data.accessToken) {
                 localStorage.setItem("token", JSON.stringify(response.data.data.accessToken));

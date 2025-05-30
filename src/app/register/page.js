@@ -1,8 +1,9 @@
 "use client"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import AuthService from '@/services/auth.service'
+import axios from 'axios'
 
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -12,41 +13,27 @@ function Register() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    //roleที่เลือก
     const [role, setRole] = useState(null)
+    //rolesจากการfetch
+    const [roles, setRoles] = useState([])
 
+    //Error message box
     const [error, setError] = useState(false)
     const [errMes, setErrMes] = useState("")
-
-    const roles = [
-        { label: 'Student', value: 'student' },
-        { label: 'Teacher', value: 'teacher' },
-        { label: 'Admin', value: 'admin' }
-    ];
+    //ปิดการพิมพ์MUI
+    const [inputValue, setInputValue] = useState('');
 
     const router = useRouter();
 
-    function handleChange(e) {
-        const id = e.target.id
-        if (id === 'username') {
-            setUsername(e.target.value)
-        }
-        if (id === 'password') {
-            setPassword(e.target.value)
-        }
-        if (id === 'confirmPassword') {
-            setConfirmPassword(e.target.value)
-        }
+    function handleSelectRoles(event, data) {
+        setRole(data ? data.value : null);
     }
-
-    function handleSelectRoles(event, value) {
-        setRole(value ? value.value : null); // value.value คือ ค่าวาลู่ในroles
-    }
-
 
     async function handleSubmit(e) {
         e.preventDefault();
-
         try {
+            //เรียกฟังก์ชันลงทะเบียน
             const response = await AuthService.register(username, password, confirmPassword, role);
             if (response) {
                 setError(false)
@@ -63,46 +50,86 @@ function Register() {
         }
     }
 
+    async function fetchRoles() {
+        try {
+            //เก็บroles
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/all/roles`)
+            setRoles(response.data.data.map((r) => ({ name: r.name.toUpperCase(), value: r.name })))
+        }
+        catch (error) {
+            console.log(error.response?.data?.message)
+        }
+    }
+
+    useEffect(() => {
+        fetchRoles()
+    }, [])
+
+    console.log(roles)
+
     return (
-        <div className="w-screen h-screen flex justify-center items-center bg-[#FEF9E1]">
-            <div className='relative h-[70%] w-[70%] flex flex-col justify-center items-center rounded-[50px] bg-[#A31D1D] shadow-xl shadow-yellow-500/50 
+        <div className="w-screen h-screen flex justify-center items-center bg-[#FEF9E1] ">
+            <div className=' relative h-[80%] w-[80%] flex flex-col justify-center items-center rounded-[50px] bg-[#A31D1D] shadow-xl shadow-yellow-500/50
+      md:h-[70%] md:w-[70%]
       lg:w-[30%] lg:h-[70%]
            motion-scale-in-[0.5] motion-opacity-in-[0%] motion-duration-[300ms] motion-ease-spring-bouncier'>
-                <img src="/img/hat2.png" alt="หมวก" className="absolute w-32 h-32 -top-17 
-                    motion-preset-shake motion-duration-900" />
+                <img src="/img/hat2.png" alt="หมวก" className="absolute w-30 h-30 -top-16 z-7
+                    motion-preset-shake motion-duration-900
+                    md:w-32 md:h-32" />
 
                 <form className='w-[60%] flex flex-col justify-center items-center
-                md:w-[60%]'>
-                    <h1 className='text-3xl text-[#EEEEEE] mb-10 font-bold z-6 whitespace-nowrap
-                    md:text-5xl md:mb-15'>
+                lg:w-[60%]'>
+                    <h1 className='text-2xl text-[#EEEEEE] mb-10 font-bold z-6 whitespace-nowrap
+                    md:text-3xl
+                    lg:text-5xl lg:mb-15'>
                         ลงทะเบียน
                     </h1>
                     <ul className="w-full flex flex-col gap-6">
                         <li >
                             <p className='self-start text-xl font-semibold text-[#E5D0AC]'>ชื่อผู้ใช้</p>
-                            <input id='username' onChange={handleChange} className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='text' ></input>
+                            <input id='username' onChange={(e) => setUsername(e.target.value)}
+                                className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='text' ></input>
 
                         </li>
                         <li>
                             <p className='self-start text-xl font-semibold text-[#E5D0AC]'>รหัสผ่าน</p>
-                            <input id='password' onChange={handleChange} className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
+                            <input id='password' onChange={(e) => setPassword(e.target.value)}
+                                className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
                         </li>
                         <li >
                             <p className='self-start text-xl font-semibold text-[#E5D0AC]'>ยืนยันรหัสผ่าน</p>
-                            <input id='confirmPassword' onChange={handleChange} className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
+                            <input id='confirmPassword' onChange={(e) => setConfirmPassword(e.target.value)}
+                                className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
                         </li>
                         <li >
                             <Autocomplete
-                                onChange={handleSelectRoles}
-                                value={roles.find(r => r.value === role) || null}
-                                disablePortal
                                 options={roles}
-                                getOptionLabel={(option) => option.label}
-                                sx={{ width: '100%', height: 65 }}
+                                getOptionLabel={(option) => option.name}
+                                onChange={handleSelectRoles}
+                                value={roles.find((r) => r.value === role) || null}
+                                disableClearable
+                                freeSolo={false} // ปิดไม่ให้พิมพ์สร้าง option ใหม่
+                                inputValue={inputValue}  // ควบคุม inputValue จาก state
+                                //ปิดการพิมMUI
+                                onInputChange={(event, newInputValue, reason) => {
+                                    if (reason === 'input') {
+                                        return;
+                                    }
+                                    setInputValue(newInputValue);
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
                                         label="Roles"
+                                        //ปิดการพิมพ์
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            readOnly: true,
+                                            style: {
+                                                caretColor: 'transparent',
+                                                userSelect: 'none',
+                                            },
+                                        }}
                                         sx={{
                                             '& .MuiOutlinedInput-root': {
                                                 '& fieldset': {
@@ -148,11 +175,11 @@ function Register() {
                     }
                     <div className='w-full gap-10 flex justify-center self-center mt-10'>
                         <button type="button" onClick={() => router.push('/login')} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#EEEEEE] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
-                            md:text-lg
+                            lg:text-lg
                             hover:bg-gray-400 hover:text-white' >
                             ย้อนกลับ</button>
                         <button type="submit" onClick={handleSubmit} className='cursor-pointer w-auto max-h-10 py-2 px-4 bg-[#F9CB43] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
-                            md:text-lg
+                            lg:text-lg
                             hover:bg-amber-400 hover:text-white'>
                             ลงทะเบียน</button>
                     </div>

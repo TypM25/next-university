@@ -8,6 +8,7 @@ export default function Student() {
   return (
     <div>
       <Suspense fallback={<div><LoadingMui /></div>}>
+        {/* ใส่เกรดนิสิต */}
         <StudentComponent />
       </Suspense>
     </div>

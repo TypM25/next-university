@@ -11,9 +11,9 @@ export default function EnrollemntUpdate() {
 
   const [newTermId, setnewTermId] = useState("")
 
-
   const [editMode, setEditMode] = useState(false)
   const [createMode, setCreateMode] = useState(false)
+  
   //Error message box
   const [error, setError] = useState(false);
   const [errMes, setErrMes] = useState("")
@@ -67,9 +67,7 @@ export default function EnrollemntUpdate() {
       setErrMes("กรุณากรอกรหัสรายวิชาเพื่อลบ")
       return;
     }
-
     try {
-      //ลบเทอมการศึกษา
       const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/semester`;
       const response = await axios.delete(API_URL_DEL, { data: { term_id: termId } })
       setTerm('')
@@ -82,7 +80,7 @@ export default function EnrollemntUpdate() {
   }
   
   //ค้นหาเทอมการศึกษา
-  async function clickFind() {
+  async function findSemester() {
     if (!termId) return
     if (termId === '') {
       setError(true)
@@ -92,12 +90,7 @@ export default function EnrollemntUpdate() {
     try {
       const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/semester`;
       const response = await axios.post(API_URL, { term_id: termId })
-      
       setTerm(response.data.data)
-      // setnewTermId(response.data.data.term_id)
-      // setTermName(response.data.data.term_name)
-      // setDateStart(response.data.data.start_date)
-      // setDateEnd(response.data.data.end_date)
 
       setError(false)
       setErrMes("")
@@ -108,7 +101,7 @@ export default function EnrollemntUpdate() {
   }
 
   useEffect(() => {
-    clickFind()
+    findSemester()
     if (!termId) return;
   }, [termId])
 
@@ -121,6 +114,7 @@ export default function EnrollemntUpdate() {
           <p className='self-center text-lg font-semibold text-black/70'>รหัสเทอม :</p>
           <div>
             <input id='term_id' onChange={(e) => setTermId(e.target.value)} className='px-4 w-full h-9 border-b' />
+            {/*ERROR BOX MUI */}
             {error && (
               <div
                 className='flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300'

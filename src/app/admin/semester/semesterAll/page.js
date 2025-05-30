@@ -14,7 +14,6 @@ const dropdown = [
     { value: "end_date", name: "End Date" },
 ];
 
-
 export default function SemestertAll() {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -38,6 +37,7 @@ export default function SemestertAll() {
                 //ค่าkeyอื่น
                 ...prev,
                 status: {
+                    //ค่าkeyย่อยของstatusอื่นๆ
                     ...prev.status,
                     [id]: checked
                 }
@@ -54,7 +54,7 @@ export default function SemestertAll() {
     //
     async function fetchSemester() {
         try {
-            //ค้นหาข้อมูลเทอมการศึกษา
+            ////ดึงข้อมูลsemesterทั้งหมด พร้อมฟังชั่นsearch
             const API_URL_SEARCH = `${process.env.NEXT_PUBLIC_API_URL}/admin/search/semester`;
             const response = await axios.post(API_URL_SEARCH, debouncedSearchConfig)
             setData(response.data.data)
@@ -76,7 +76,7 @@ export default function SemestertAll() {
     return (
         <div className='flex flex-col w-screen px-10 py-20 justify-center items-center'>
             <h1 className='mb-10 text-3xl font-bold text-[#8E1616]'>เทอมการศึกษา</h1>
-            <div className='w-full flex flex-col justify-center items-center md:w-fit'>
+            <div className='w-full flex flex-col justify-center items-center lg:w-fit'>
                 <Filter
                     filter={dropdown}
                     handleChange={handleChange}

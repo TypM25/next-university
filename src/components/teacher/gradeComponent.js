@@ -2,7 +2,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import TableStudSub from '@/components/teacher/TableStudSub'
 import axios from 'axios'
 import LoadingMui from '@/components/loadingMui'
 import { Button } from '@mui/material';
@@ -43,9 +42,9 @@ export default function GradeComponent() {
     });
   };
 
+   //หาข้อมูลรายวิชาด้วย subject_id เพื่อเเสดงในตาราง
   async function fetchData() {
     try {
-      //หาข้อมูลรายวิชาด้วย subject_id เพื่อเเสดงในตาราง
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`)
       setStudents(response?.data?.data?.students)
       setCredits(response?.data?.data?.credits)
@@ -56,10 +55,10 @@ export default function GradeComponent() {
     }
   }
 
+    //สร้างเกรดได้แบบนิสิตหลายคน Array objects
   async function handleSubmit() {
     if (term_id !== undefined) {
       try {
-        //สร้างเกรดได้แบบนิสิตหลายคน
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/create/multi/gradeDetail`, answer)
         setAnswer([])
         alert(response.data.message)
@@ -75,13 +74,13 @@ export default function GradeComponent() {
   }, [])
 
   return (
-    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center md:w-fit '>
+    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center lg:w-fit '>
       <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขเกรด</p>
       {
         Array.isArray(students) && students.length > 0 ? (
           <>
             <div className='w-full h-auto overflow-y-auto max-h-[400px]
-                    md:flex md:justify-center'>
+                    lg:flex lg:justify-center'>
               <TableContainer component={Paper} >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>

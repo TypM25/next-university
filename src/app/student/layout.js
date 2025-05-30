@@ -22,7 +22,7 @@ export default function StudentLayout({ children }) {
       </header>
 
       <main >
-        <div className='flex justify-center items-center min-h-screen w-screen py-14 md:py-20'>
+        <div className='flex justify-center items-center min-h-screen w-screen py-14 lg:py-20'>
           {children}
           {user && <ChatIcon user_id={user.user_id} role={user.role[0]} />}
         </div>

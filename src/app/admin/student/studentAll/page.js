@@ -5,8 +5,6 @@ import Filter from '@/components/all/filter';
 import LoadingMui from '@/components/loadingMui';
 import { useDebounce } from 'use-debounce';
 
-// const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/all/student`;
-
 const dropdown = [
     { value: "student_id", name: "Student ID" },
     { value: "student_first_name", name: "Firstname" },
@@ -68,6 +66,7 @@ export default function StudentAll() {
 
     async function searchUser() {
         try {
+            ////ดึงข้อมูลstudentทั้งหมด พร้อมฟังชั่นsearch
             const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/admin/search/student`, debouncedSearchConfig)
             setData(response.data.data)
             console.log(response.data.data)
@@ -87,7 +86,7 @@ export default function StudentAll() {
     return (
         <div className='flex flex-col w-screen px-10 py-20 justify-center items-center'>
             <h1 className='mb-10 text-3xl font-bold text-[#8E1616]'>นิสิตที่ลงทะเบียน</h1>
-            <div className='w-full flex flex-col justify-center items-center md:w-fit'>
+            <div className='w-full flex flex-col justify-center items-center lg:w-fit'>
                 <Filter
                     filter={dropdown}
                     handleChange={handleChange}
@@ -99,18 +98,18 @@ export default function StudentAll() {
                     ) : (
 
                         <div className="w-auto h-auto overflow-x-auto max-w-full max-h-[400px] 
-                    md:flex md:justify-center">
+                    lg:flex lg:justify-center">
                             <table className="w-full text-sm text-left text-gray-500">
                                 <thead className="text-xs text-white uppercase bg-[#8E1616] text-center">
                                     <tr>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">รหัสนิสิต</th>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">ชื่อจริง</th>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">นามสกุล</th>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">เทอมการศึกษา</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">รหัสนิสิต</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">ชื่อจริง</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">นามสกุล</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">เทอมการศึกษา</th>
 
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">รหัสผู้ใช้</th>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">สร้างโดย</th>
-                                        <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">วันที่สร้าง</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">รหัสผู้ใช้</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">สร้างโดย</th>
+                                        <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">วันที่สร้าง</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -118,31 +117,31 @@ export default function StudentAll() {
                                         (data.map((item, index) => (
                                             <tr key={index} className="border-b border-gray-200 dark:border-gray-300">
                                                 <td className="p-1 font-medium text-gray-900 whit espace-nowrap bg-white text-center 
-                                                md:text-xl">
+                                                lg:text-xl">
                                                     {item.student_id}
                                                 </td>
                                                 <td className="p-1 text-center text-sm bg-gray-50 
-                                        md:px-6 md:py-4 md:text-xl ">
+                                        lg:px-6 lg:py-4 lg:text-xl ">
                                                     {item.student_first_name}
                                                 </td>
                                                 <td className="p-1 bg-white text-center text-sm
-                                         md:md:px-6 md:py-4 md:text-xl">
+                                         lg:lg:px-6 lg:py-4 lg:text-xl">
                                                     {item.student_last_name}
                                                 </td>
                                                 <td className="p-1 text-center text-sm bg-gray-50 
-                                        md:px-6 md:py-4 md:text-xl ">
+                                        lg:px-6 lg:py-4 lg:text-xl ">
                                                     {item.term_id}
                                                 </td>
                                                 <td className="p-1 bg-white text-center text-sm
-                                         md:md:px-6 md:py-4 md:text-xl">
+                                         lg:lg:px-6 lg:py-4 lg:text-xl">
                                                     {item.user_id}
                                                 </td>
                                                 <td className="p-1 text-center bg-gray-50  text-sm
-                                        md:px-6 md:py-4 md:text-xl ">
+                                        lg:px-6 lg:py-4 lg:text-xl ">
                                                     {item.create_by}
                                                 </td>
                                                 <td className="p-1 bg-white text-center text-sm
-                                        md:px-6 md:py-4 md:text-xl">
+                                        lg:px-6 lg:py-4 lg:text-xl">
                                                     {item.createdAt}
                                                 </td>
                                             </tr>

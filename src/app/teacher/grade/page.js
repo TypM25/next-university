@@ -8,6 +8,7 @@ export default function Grade() {
   return (
     <div>
       <Suspense fallback={<div><LoadingMui /></div>}>
+        {/* เกรดนิสิตทั้งหมด */}
         <GradeComponent />
       </Suspense>
     </div>

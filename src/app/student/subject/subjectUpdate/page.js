@@ -7,10 +7,11 @@ import { jwtDecode } from 'jwt-decode';
 export default function SubjectUpdate() {
   const [user, setUser] = useState("")
 
-  const [idSubject, setIdsubject] = useState(0)
-  const [idStudent, setIdStudent] = useState(0)
+  const [idSubject, setIdsubject] = useState("")
+  const [idStudent, setIdStudent] = useState("")
   const [subject, setSubject] = useState("")
 
+  //Error message box
   const [error, setError] = useState(false)
   const [errMes, setErrMes] = useState("")
 
@@ -21,12 +22,6 @@ export default function SubjectUpdate() {
     setUser(decoded);
   }, []);
 
-  async function handleChange(e) {
-    const id = e.target.id
-    if (id === 'id') {
-      setIdsubject(e.target.value)
-    }
-  }
 
   //เก็บข้อมูลนิสิตเพื่อเอาstudent_id เพื่อส่งparams
   async function fetchData() {
@@ -124,20 +119,22 @@ export default function SubjectUpdate() {
   }, [idSubject])
 
   return (
-    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl md:w-[50%]'>
+    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl lg:w-[50%]'>
       <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>
         แก้ไขรายวิชา
       </p>
 
       <div className='w-full flex flex-col items-center'>
-        <div className='h-auto w-full flex flex-col gap-5 justify-center items-center md:items-start md:flex-row md:gap-10'>
+        <div className='h-auto w-full flex flex-col gap-5 justify-center items-center lg:items-start lg:flex-row lg:gap-10'>
           <p className='self-center text-lg font-semibold text-black/70'>รหัสวิชา :</p>
           <div>
             <input
               id='id'
-              onChange={handleChange}
+              onChange={(e) => setIdsubject(e.target.value)}
               className='px-4 w-full h-9 border-b rounded-none'
             />
+
+            {/*ERROR BOX MUI */}
             {error && (
               <div
                 className='flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300'

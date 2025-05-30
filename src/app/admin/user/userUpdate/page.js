@@ -10,7 +10,7 @@ export default function UserUpdate() {
 
     const [debouncedIdUser] = useDebounce(idUser, 500)
     const payload = {
-        id : debouncedIdUser
+        id: debouncedIdUser
     }
 
     const [newPassword, setNewPassword] = useState(null)
@@ -19,94 +19,98 @@ export default function UserUpdate() {
     const [data, setData] = useState("")
     const [editMode, setEditMode] = useState(false)
 
-
+    //Error message box
     const [error, setError] = useState(false)
     const [errMes, setErrMes] = useState("")
-
+    //Error update message box
     const [errorUpdate, setErrorUpdate] = useState(false)
     const [errMesUpdate, setErrMesUpdate] = useState("")
 
-
+    //login_data ไว้ post เพื่อเช็คก่อนอัพเดทรหัส
     const login_data = {
         username: username,
         password: password
     }
+
+    //change_password ไวั post เมื่ออัพเดทรหัส
     const change_password = {
         username: username,
-        password: newPassword
-    }
-    const find_data = {
-        username: username
+        password: newPassword,
+        confirmPassword: cfPassword
     }
 
-    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/user/id`;
-    const API_URL_LOGIN = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signin`;
-    const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/user`;
-    const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/user`;
-
-    function handleChange(e) {
-        const id = e.target.id
-        if (id === 'user_id') {
-            setIdUser(e.target.value)
-        }
-        else if (id === 'password') {
-            setPassword(e.target.value)
-        }
-        else if (id === 'newpassword') {
-            setNewPassword(e.target.value)
-        }
-        else if (id === 'cfpassword') {
-            setCfPassword(e.target.value)
-            console.log(cfPassword)
-        }
-    }
-
-    async function clickConfirmEdit(e) {
-        e.preventDefault();
-        console.log("Edit click")
-        console.log("NewPass :", newPassword)
-        console.log("CF Pass :", cfPassword)
+    //ค้นหาข้อมูลผู้ใช้
+    async function findUser() {
         try {
-            //1.) check login 
-            const response1 = await axios.post(API_URL_LOGIN, login_data)
-            console.log(response1.data.data)
+            const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/user/id`;
+            const response = await axios.post(API_URL, payload)
+            setUsername(response.data.data.username)
+            setError(false)
+            setData(response.data.data)
+            console.log(data)
+        }
+        catch (error) {
+            setError(true)
+            setErrMes(error.response.data.message)
 
-            //เมือ่ไม่กรอกรหัสผ่าน
-            if (!cfPassword || !newPassword) {
-                setErrMesUpdate("กรุณากรอกข้อมูล")
-                setErrorUpdate(true)
-                return;
-            }
+        }
+    }
+
+    //เช็คล็อคอินก่อนเปลี่ยนรหัส
+    async function checkLogin() {
+        try {
+            const API_URL_LOGIN = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signin`;
+            await axios.post(API_URL_LOGIN, login_data)
+            setErrMesUpdate(null)
+            setErrorUpdate(true)
 
             if (password === newPassword) {
-                setErrMesUpdate("คุณเคยใช้รหัสผ่านนี้เเล้ว")
+                setErrMesUpdate("กรุณาเปลี่ยนรหัสผ่าน")
                 setErrorUpdate(true)
                 return;
             }
+        }
+        catch (error) {
+            setErrorUpdate(true)
+            setErrMesUpdate(error.response.data.message)
 
-            //2) check passwprd == cfpassword
-            if (newPassword != cfPassword) {
-                setErrMesUpdate("รหัสผ่านไม่ตรงกับยืนยันรหัสผ่าน")
-                setErrorUpdate(true)
-                return
-            }
+        }
+    }
 
+    //เช็คอัพเดทข้อมูลผู้ใช้
+    async function changePassword() {
+        try {
+            const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/user`;
             const response2 = await axios.put(API_URL_UPD, change_password)
             setErrorUpdate(false)
             setEditMode(false);
+
             setCfPassword(null);
             setNewPassword(null);
             alert(response2.data.message)
         }
-        catch (err) {
+        catch (error) {
             setErrorUpdate(true)
-            setErrMesUpdate(err.response.data.message)
+            setErrMesUpdate(error.response.data.message)
+
         }
     }
 
+    //เมื่อกด อัพเดทข้อมูลผู้ใช้
+    async function clickConfirmEdit(e) {
+        e.preventDefault();
+        await checkLogin()
+        await changePassword()
+    }
+
+    //ลบข้อมูลผู้ใช้
     async function clickDelete() {
         try {
-            const response = await axios.delete(API_URL_DEL, { data: find_data })
+
+            const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/user`;
+            const response = await axios.delete(API_URL_DEL, {
+                data: { user_id: idUser }
+            });
             setError(false)
             setData('')
             alert(response.data.message)
@@ -118,23 +122,9 @@ export default function UserUpdate() {
     }
 
     useEffect(() => {
-        if (!idUser) return; // ถ้ายังไม่มี id ไม่ต้อง fetch
-        async function clickFind() {
-            try {
-                const response = await axios.post(API_URL, payload)
-                setUsername(response.data.data.username)
-                setError(false)
-                setData(response.data.data)
-                console.log(data)
-            }
-            catch (error) {
-                setError(true)
-                setErrMes(error.response.data.message)
-               
-            }
-        }
-        clickFind()
-
+        if (idUser) {
+            findUser()
+        };
     }, [debouncedIdUser])
 
     return (
@@ -148,7 +138,9 @@ export default function UserUpdate() {
                 <p className='self-center whitespace-nowrap text-lg font-semibold text-balck/70'>
                     รหัสผู้ใช้ : </p>
                 <div>
-                    <input id='user_id' onChange={handleChange} className='px-4 w- h-9 border-b'></input>
+                    <input id='user_id' onChange={(e) => setIdUser(e.target.value)} className='px-4 w- h-9 border-b'></input>
+
+                    {/*ERROR BOX MUI */}
                     {
                         error && <div className="flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
                             <svg className="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -178,11 +170,16 @@ export default function UserUpdate() {
                 lg:p-10'>
                     <p className='mb-5 self-start font-semibold'>เปลี่ยนรหัสผ่าน</p>
                     <p className='self-start'>รหัสผ่านเดิม</p>
-                    <input id='password' onChange={handleChange} className='w-full p my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
+                    <input id='password' onChange={(e) => setPassword(e.target.value)}
+                        className='w-full p my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
                     <p className='self-start'>รหัสผ่านใหม่</p>
-                    <input id='newpassword' onChange={handleChange} className='w-full p my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
+                    <input id='newpassword' onChange={(e) => setNewPassword(e.target.value)}
+                        className='w-full p my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
                     <p className='self-start '>ยืนยันรหัสผ่านใหม่</p>
-                    <input id='cfpassword' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
+                    <input id='cfpassword' onChange={(e) => setCfPassword(e.target.value)}
+                        className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='password'></input>
+
+                    {/*ERROR UPDATE BOX MUI */}
                     {
                         errorUpdate && <div className="flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
                             <svg className="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

@@ -5,18 +5,13 @@ import AuthService from "@/services/auth.service";
 import { jwtDecode } from "jwt-decode";
 import UploadImage from "../uploadImage";
 
-const API_URL_IMAGE = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/files`;
-const API_URL_UPLOAD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/upload`;
-
 const BoardTeacher = () => {
-    // const [idteacher, setIdStudent] = useState(0)
     const [teacher, setTeacher] = useState("")
     const [user, setUser] = useState("")
-    // const data = {
-    //     username: user.username
-    // }
 
-    // console.log(teacher)
+    //URL สำหรับส่งไป UPLOAD COMPONENT
+    const API_URL_IMAGE = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/files`;
+    const API_URL_UPLOAD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/upload`;
 
     useEffect(() => {
         const token = AuthService.getToken();

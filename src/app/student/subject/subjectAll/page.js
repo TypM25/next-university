@@ -12,7 +12,6 @@ export default function SubjectAll() {
     const [subject, setSubject] = useState([])
 
     const router = useRouter();
-
     //เก็บข้อมูลuser ส่งuser.user_idไปfetchData
     useEffect(() => {
         const token = AuthService.getToken();
@@ -48,6 +47,7 @@ export default function SubjectAll() {
             return false
 
         } catch (error) {
+            //ถ้าประเมินเเล้ว
             if (error.response?.status === 409) {
                 return true;
             }
@@ -62,7 +62,7 @@ export default function SubjectAll() {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`);
             setIdStudent(response.data.data.student_id);
             setSubject(response.data.data.subjects)
-            // setTeacher(response.data.data.subjects.flatMap((s) => s.teachers))
+            
         } catch (error) {
             console.log(error.response?.data?.message)
         }
@@ -78,7 +78,6 @@ export default function SubjectAll() {
         <div className='flex flex-col w-screen px-10 py-20 justify-center items-center'>
             <h1 className='mb-10 text-3xl font-bold text-black'>รายวิชาที่ลงทะเบียน</h1>
             <div className='w-full flex flex-col justify-center items-center'>
-                {/* <Filter filter={dropdown} handleDropdown={handleDropdown} handleChange={handleChange} /> */}
                 <div className='flex flex-col justify-center items-center w-[100%] min-w-[20px] overflow-x-auto overflow-y-auto'>
                     <table className="w-fit text-sm text-left text-gray-700">
                         <thead className="uppercase bg-[#8E1616] text-white text-center">
@@ -92,13 +91,13 @@ export default function SubjectAll() {
                         <tbody>
                             {subject?.length > 0 ? subject.map((sub, index) => (
                                 <tr key={index} className={`border-b border-b-gray-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
-                                    <td className="px-6 py-4 text-center text-sm font-medium text-gray-900 md:text-xl">
+                                    <td className="px-6 py-4 text-center text-sm font-medium text-gray-900 lg:text-xl">
                                         {sub.subject_id}
                                     </td>
-                                    <td className="px-6 py-4 text-center text-sm text-black/80 md:text-xl">
+                                    <td className="px-6 py-4 text-center text-sm text-black/80 lg:text-xl">
                                         {sub.subject_name}
                                     </td>
-                                    <td className="px-6 py-4 text-center text-sm font-medium text-gray-900 md:text-xl">
+                                    <td className="px-6 py-4 text-center text-sm font-medium text-gray-900 lg:text-xl">
                                         {
                                             sub.teachers.length !== 0 ? sub.teachers?.map((t, index) => {
                                                 return <button key={index} onClick={async () => {
@@ -115,11 +114,11 @@ export default function SubjectAll() {
                                                     router.push(`/student/evaluation?student_id=${idStudent}&teacher_id=${t.teacher_id}&term_id=${idTerm}`)
                                                 }}
                                                     className='flex hover:cursor-pointer font-light '>
-                                                    <p className='text-sm md:text-xl '>{t.teacher_first_name + " " + t.teacher_last_name}</p>
+                                                    <p className='text-sm lg:text-xl '>{t.teacher_first_name + " " + t.teacher_last_name}</p>
                                                 </button>
                                             })
                                                 :
-                                                <p className='text-sm md:text-xl'>-</p>
+                                                <p className='text-sm lg:text-xl'>-</p>
                                         }
 
                                     </td>

@@ -57,7 +57,7 @@ export default function TeacherNavbar() {
 
   useEffect(() => {
     checkSemester();
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (user && user?.user_id) {
@@ -74,43 +74,46 @@ export default function TeacherNavbar() {
 
 
   return (
-    <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg md:flex-row">
+    <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg lg:flex-row">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between">
         <Link href="/teacher" className="text-3xl font-bold text-[#EEEEEE]">
           Teacher : {user.username || ""}
         </Link>
         <button
-          onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 text-[#EEEEEE] focus:outline-none" aria-label="Toggle menu">
+          onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-[#EEEEEE] focus:outline-none" aria-label="Toggle menu">
           ☰
         </button>
       </div>
 
+
       <div
         className={`${isOpen ? "block" : "hidden"
-          } mt-4 md:mt-0 md:flex md:items-center md:justify-center`}
+          } mt-4 lg:mt-0 lg:flex lg:items-center lg:justify-center`}
       >
-        <ul className="flex flex-col md:flex-row md:items-center md:justify-center md:space-x-6 text-lg font-semibold gap-4 md:px-0">
+        <ul className="flex flex-col lg:flex-row lg:items-center lg:justify-center lg:space-x-6 text-lg font-semibold gap-4 lg:px-0">
           <li>
             <Link
               href="/teacher"
-              className="block text-xl md:text-2xl hover:text-white/70"
+              className="block text-xl lg:text-2xl hover:text-white/70"
             >
               หน้าหลัก
             </Link>
           </li>
 
+          {/* ถ้ายังไม่ได้ลงทะเบียนอาจารย์ */}
           {!teacher && (
             <li>
               <Link
                 href="/teacher/create"
-                className="block text-xl md:text-2xl hover:text-white/70"
+                className="block text-xl lg:text-2xl hover:text-white/70"
               >
                 ลงทะเบียนอาจารย์
               </Link>
             </li>
           )}
 
-          <li className="relative group text-xl md:text-2xl">
+          {/* รายวิชา */}
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "subject" ? null : "subject")
@@ -120,8 +123,13 @@ export default function TeacherNavbar() {
               รายวิชา
             </button>
             <div
+              onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
+                return
+              }}
               className={`${dropdownOpen === "subject" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               <ul>
                 <li>
@@ -153,24 +161,28 @@ export default function TeacherNavbar() {
             </div>
           </li>
 
+          {/* เกรด */}
           <li>
             <button
               onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
                 {
+
                   idSubject && termId ?
                     router.push(`/teacher/grade?subject_id=${idSubject}&term_id=${termId}`)
                     :
                     console.log("Loading to grade all page.")
                 }
               }}
-              className="text-xl md:text-2xl hover:text-white/70"
+              className="text-xl lg:text-2xl hover:text-white/70"
             >
               เกรด
             </button>
           </li>
 
           <li>
-            <button onClick={logOut} className="text-xl md:text-2xl hover:text-white/70">
+            <button onClick={logOut} className="text-xl lg:text-2xl hover:text-white/70">
               ล็อกเอาท์
             </button>
           </li>

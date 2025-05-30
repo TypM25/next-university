@@ -2,91 +2,82 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-export default function TeacherUpdate() {
-    const [idTeacher, setIdTeacher] = useState(null)
+export default function StudentUpdate() {
+    const [idStudent, setIdstudent] = useState(null)
     const [data, setData] = useState("")
     const [editMode, setEditMode] = useState(false)
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
-
+    //Error message box
     const [error, setError] = useState(false)
-    const [errMes, setErrorMes] = useState('')
-
+    const [errMes, setErrMes] = useState('')
+    //เก็บ update_data ไว้ post
     const update_data = {
-        teacher_id : idTeacher,
-        teacher_first_name: firstname,
-        teacher_last_name: lastname
+        student_id: idStudent,
+        student_first_name: firstname,
+        student_last_name: lastname
     }
 
-    const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/teacher/${idTeacher}`;
-    const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/teacher/${idTeacher}`;
-    const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/teacher`;
-
-    function handleChange(e) {
-        const id = e.target.id
-        if (id === 'id') {
-            setIdTeacher(e.target.value)
-        } else if (id === 'firstname') {
-            setFirstname(e.target.value)
-        } else if (id === 'lastname') {
-            setLastname(e.target.value)
-        }
-    }
-
+    //แก้ไขข้อมูลนิสิต
     async function clickConfirmEdit(e) {
         e.preventDefault();
         try {
+            const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/student`;
             const response = await axios.put(API_URL_UPD, update_data)
             setError(false)
-            setErrorMes("")
+            setErrMes("")
             setFirstname("")
             setLastname("")
-          
+
             alert(response.data.message)
         }
         catch (err) {
             setError(true)
-            setErrorMes(err.response.data.message)
+            setErrMes(err.response.data.message)
         }
     }
 
+    //ลบข้อมูลนิสิต
     async function clickDelete() {
         try {
+            const API_URL_DEL = `${process.env.NEXT_PUBLIC_API_URL}/admin/delete/student/${idStudent}`;
             const response = await axios.delete(API_URL_DEL)
             setData('')
             setError(false)
-            setErrorMes('')
+            setErrMes('')
             alert(response.data.message)
         }
         catch (err) {
             setError(true)
-            setErrorMes(err.response?.data?.message)
+            setErrMes(err.response?.data?.message)
             alert(err.response?.data?.message)
         }
     }
 
-
-    useEffect(() => {
-        async function clickFind() {
-            if (!idTeacher) return;
+    //ค้นหาข้อมูลส่วนตัวนิสิต
+    async function findStudent() {
+        try {
+            const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/student/${idStudent}`;
+            const response = await axios.get(API_URL)
+            setData(response.data.data)
             setError(false)
-            setErrorMes('')
-            try {
-                const response = await axios.get(API_URL)
-                setData(response.data.data)
-                setError(false)
-                setErrorMes('')
+            setErrMes('')
 
-            }
-            catch (error) {
-                setError(true)
-                setErrorMes(error.response?.data?.message)
-                // alert(error.response?.data?.message )
-            }
         }
-        clickFind()
-
-    }, [idTeacher])
+        catch (error) {
+            setError(true)
+            setErrMes(error.response?.data?.message)
+            // alert(error.response?.data?.message )
+        }
+    }
+    useEffect(() => {
+        if (!idStudent) {
+            setError(false)
+            setErrMes('')
+            return;
+        }
+        findStudent()
+    }, [idStudent])
 
     return (
         <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center rounded-3xl 
@@ -97,7 +88,8 @@ export default function TeacherUpdate() {
                 lg:flex-row lg:gap-10'>
                     <p className='self-center text-lg font-semibold text-black/70'>รหัสนิสิต :</p>
                     <div >
-                        <input id='id' onChange={handleChange} className='px-4 w-full h-9  border-b' />
+                        <input id='id' onChange={(e) => setIdstudent(e.target.value)} className='px-4 w-full h-9  border-b' />
+                        {/*ERROR BOX MUI */}
                         {
                             error && <div className="flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
                                 <svg className="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -111,7 +103,7 @@ export default function TeacherUpdate() {
                         }
                     </div>
 
-                    {/* <button onClick={clickFind} className='w-20 py-2 h-full mx-3 font-bold text-black/70 rounded-full bg-gray-500 hover:bg-gray-600'>
+                    {/* <button onClick={findStudent} className='w-20 py-2 h-full mx-3 font-bold text-black/70 rounded-full bg-gray-500 hover:bg-gray-600'>
                         ค้นหา
                     </button> */}
                 </div>
@@ -124,21 +116,25 @@ export default function TeacherUpdate() {
                 <div className='w-full h-full py-10 px-10 lg:px-30'>
                     <div className='flex mb-7'>
                         <p className='text-lg mr-3 text-black/70'>ชื่อ : </p>
-                        <p className='self-center text-lg text-[#BB3E00]'>{data.teacher_first_name}</p>
+                        <p className='self-center text-lg text-[#BB3E00]'>{data.student_first_name}</p>
                     </div>
                     <div className='flex mb-7'>
                         <p className='text-lg mr-3 text-black/70'>นามสกุล : </p>
-                        <p className='self-center text-lg text-[#BB3E00]'>{data.teacher_last_name}</p>
+                        <p className='self-center text-lg text-[#BB3E00]'>{data.student_last_name}</p>
                     </div>
                 </div>
 
                 {editMode &&
                     <div className='flex flex-col p-5 w-[80%] bg-gray-100 rounded-lg lg:p-10'>
                         <p className='mb-5 self-start font-semibold'>แก้ไขข้อมูลนิสิต</p>
-                        <p className='self-start'>ชื่อ</p>
-                        <input id='firstname' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
-                        <p className='self-start'>นามสกุล</p>
-                        <input id='lastname' onChange={handleChange} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
+                        <p className='self-start'>
+                            ชื่อ</p>
+                        <input id='firstname' onChange={(e) => setFirstname(e.target.value)}
+                            className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
+                        <p className='self-start'>
+                            นามสกุล</p>
+                        <input id='lastname' onChange={(e) => setLastname(e.target.value)}
+                            className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text' />
                         <button onClick={clickConfirmEdit} className='self-center w-20 py-2 mx-3 font-bold text-black/70 rounded-full bg-gray-400 hover:bg-gray-500'>ยืนยัน</button>
                     </div>}
             </div>

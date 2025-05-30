@@ -2,7 +2,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import TableStudSub from '@/components/teacher/TableStudSub'
 import axios from 'axios'
 import LoadingMui from '@/components/loadingMui'
 
@@ -19,6 +18,7 @@ export default function StudentComponent() {
     const subject_id = searchParams.get('subject_id');
 
     const [students, setStudents] = useState([])
+
     //ค้นหารายวิชาด้วยsubject_id
     async function fetchData() {
         try {
@@ -33,8 +33,8 @@ export default function StudentComponent() {
     }
 
     useEffect(() => {
-        if(subject_id)
-        fetchData()
+        if (subject_id)
+            fetchData()
     }, [subject_id])
 
 

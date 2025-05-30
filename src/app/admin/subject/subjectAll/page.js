@@ -7,10 +7,7 @@ import Filter from '@/components/all/filter';
 import LoadingMui from '@/components/loadingMui';
 import { useDebounce } from 'use-debounce';
 
-const API_URL_SEARCH = `${process.env.NEXT_PUBLIC_API_URL}/admin/search/subject`;
-
 const dropdown = [
-
     { value: "subject_id", name: "ID" },
     { value: "subject_name", name: "Name" },
     { value: "createdAt", name: "Created Date" },
@@ -39,7 +36,8 @@ export default function SubjectAll() {
 
     async function searchUser() {
         try {
-            const response = await axios.post(API_URL_SEARCH, debouncedSearchConfig)
+            //ดึงข้อมูลsubjectทั้งหมด พร้อมฟังชั่นsearch
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/admin/search/subject`, debouncedSearchConfig)
             setData(response.data.data)
             console.log(response.data.data)
         }
@@ -59,7 +57,7 @@ export default function SubjectAll() {
     return (
         <div className='flex flex-col w-screen px-10 py-20 justify-center items-center'>
             <h1 className='mb-10 text-3xl font-bold text-[#8E1616]'>รายวิชาที่ลงทะเบียน</h1>
-            <div className='w-full flex flex-col justify-center items-center md:w-fit'>
+            <div className='w-full flex flex-col justify-center items-center lg:w-fit'>
                 <Filter
                     filter={dropdown}
                     handleChange={handleChange}

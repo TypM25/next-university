@@ -6,12 +6,11 @@ import { jwtDecode } from "jwt-decode";
 import UploadImage from "../uploadImage";
 
 const BoardStudent = () => {
-    const [idStudent, setIdStudent] = useState("")
     const [student, setStudent] = useState("")
     const [user, setUser] = useState("")
     const [gpa, setGpa] = useState("")
 
-
+    //URL สำหรับส่งไป UPLOAD COMPONENT
     const API_URL_IMAGE = `${process.env.NEXT_PUBLIC_API_URL}/student/find/files`;
     const API_URL_UPLOAD = `${process.env.NEXT_PUBLIC_API_URL}/student/upload`;
 
@@ -21,7 +20,6 @@ const BoardStudent = () => {
             const decoded = jwtDecode(token);
             setUser(decoded);
         }
-
     }, []);
 
     async function fetchData() {
@@ -29,7 +27,7 @@ const BoardStudent = () => {
         try {
             const stud_data = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`);
             const studentId = stud_data.data.data.student_id;
-            setIdStudent(studentId);
+
             setStudent(stud_data.data.data);
 
             const gpa_data = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/gpa/${studentId}`);
@@ -45,14 +43,12 @@ const BoardStudent = () => {
         }
     }
 
-
     useEffect(() => {
         if (user && user.username) {
             fetchData();
         }
     }, [user])
 
-    console.log("--------------->", gpa)
     return (
         <>
             <div name='student' className='w-full h-full flex flex-col items-center text-start '>
@@ -70,23 +66,23 @@ const BoardStudent = () => {
                             </div>
                         </div>
                         <div className='w-full h-auto overflow-y-auto max-h-[400px]
-                    md:flex md:justify-center md:w-full'>
+                    lg:flex lg:justify-center lg:w-full'>
                             {gpa !== null &&
                                 <table className="w-full text-sm text-left text-gray-500">
                                     <thead className="text-xs text-white uppercase bg-[#8E1616] text-center">
                                         <tr>
-                                            <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">Term ID</th>
-                                            <th scope="col" className="text-sm p-1 md:px-6 md:py-3 md:text-lg">GPA</th>
+                                            <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">Term ID</th>
+                                            <th scope="col" className="text-sm p-1 lg:px-6 lg:py-3 lg:text-lg">GPA</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr className="border-b border-gray-200 dark:border-gray-300">
                                             <td className="p-1 font-medium text-gray-900 whit espace-nowrap bg-white text-center 
-                                                md:text-xl">
+                                                lg:text-xl">
                                                 {gpa.term_id}
                                             </td>
                                             <td className="p-1 text-center text-sm bg-gray-50 
-                                        md:px-6 md:py-4 md:text-xl ">
+                                        lg:px-6 lg:py-4 lg:text-xl ">
                                                 {gpa.GPA}
                                             </td>
                                         </tr>

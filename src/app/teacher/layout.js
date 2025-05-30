@@ -24,7 +24,7 @@ export default function TeachertLayout({ children }) {
       </header>
 
       <main >
-        <div className='flex justify-center items-center min-h-screen w-screen py-14 md:py-28'>
+        <div className='flex justify-center items-center min-h-screen w-screen py-14 lg:py-28'>
           {children}
           {user && <ChatIcon user_id={user.user_id} role={user.role[0]} />}
         </div>

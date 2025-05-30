@@ -21,48 +21,55 @@ export default function AdminNavbar() {
     router.push("/login");
   };
 
- 
+
 
   return (
-    <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg md:flex-row">
+    <nav className="flex flex-col justify-between px-4 py-3 bg-black text-white rounded-lg lg:flex-row">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between">
         <Link href="/admin" className="text-3xl font-bold text-[#FEF9E1]">
           {user.username}
         </Link>
+        {/* เมื่อคลิ๊กแถบเมนู ☰*/}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-[#FEF9E1] focus:outline-none"
-        >
+          className="lg:hidden p-2 text-[#FEF9E1] focus:outline-none">
           ☰
         </button>
       </div>
 
       <div
+        // ถ้าเปิดให้ display block 
+        //ถ้าไม่ให้ display hidden
         className={`${isOpen ? "block" : "hidden"
-          } mt-4 md:mt-0 md:flex md:items-center md:justify-center`}
+          } mt-4 lg:mt-0 lg:flex lg:items-center lg:justify-center`}
       >
-        <ul className="flex flex-col md:flex-row md:items-center md:justify-center md:space-x-6 text-lg font-semibold gap-4 md:px-0">
+        <ul className="flex flex-col lg:flex-row lg:items-center lg:justify-center lg:space-x-6 text-lg font-semibold gap-4 lg:px-0">
           <li>
             <Link
               href="/admin"
-              className="block text-xl md:text-2xl hover:text-white/70"
+              className="block text-xl lg:text-2xl hover:text-white/70"
             >
               หน้าหลัก
             </Link>
           </li>
 
           {/* ผู้ใช้งาน */}
-          <li className="relative group text-xl md:text-2xl">
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 //ถ้า dropdownOpen === "user" เปิดอยู่ → ปิด 
                 //ถ้าไม่ได้เปิดอยู่เก็บค่าtitle
-                setDropdownOpen(dropdownOpen === "user" ? null : "user")} 
+                setDropdownOpen(dropdownOpen === "user" ? null : "user")}
               className="w-full text-left hover:text-white/70">
               ผู้ใช้งาน
             </button>
-            <div className={`${dropdownOpen === "user" ? "block" : "hidden"}
-               md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}>
+            <div onClick={() => {
+              setDropdownOpen(null)
+              setIsOpen(false)
+              return
+            }}
+              className={`${dropdownOpen === "user" ? "block" : "hidden"}
+               lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}>
               <Link
                 href="/admin/user/userAll"
                 className="block text-xl px-4 py-2 hover:bg-gray-100"
@@ -85,7 +92,7 @@ export default function AdminNavbar() {
           </li>
 
           {/* นิสิต */}
-          <li className="relative group text-xl md:text-2xl">
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "student" ? null : "student")
@@ -95,8 +102,13 @@ export default function AdminNavbar() {
               นิสิต
             </button>
             <div
+              onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
+                return
+              }}
               className={`${dropdownOpen === "student" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               <Link
                 href="/admin/student/studentAll"
@@ -126,7 +138,7 @@ export default function AdminNavbar() {
           </li>
 
           {/* อาจารย์ */}
-          <li className="relative group text-xl md:text-2xl">
+          <li className="relative group text-xl lg:text-2xl" >
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "teacher" ? null : "teacher")
@@ -136,8 +148,13 @@ export default function AdminNavbar() {
               อาจารย์
             </button>
             <div
+              onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
+                return
+              }}
               className={`${dropdownOpen === "teacher" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               <Link
                 href="/admin/teacher/teacherAll"
@@ -159,6 +176,7 @@ export default function AdminNavbar() {
               </Link>
               <Link
                 href="/admin/teacher/teacherRating"
+
                 className="block text-xl px-4 py-2 hover:bg-gray-100"
               >
                 เรตติ้งอาจารย์
@@ -167,7 +185,7 @@ export default function AdminNavbar() {
           </li>
 
           {/* รายวิชา */}
-          <li className="relative group text-xl md:text-2xl">
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "subject" ? null : "subject")
@@ -177,8 +195,13 @@ export default function AdminNavbar() {
               รายวิชา
             </button>
             <div
+              onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
+                return
+              }}
               className={`${dropdownOpen === "subject" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               <Link
                 href="/admin/subject/subjectAll"
@@ -196,7 +219,7 @@ export default function AdminNavbar() {
           </li>
 
           {/* เทอม */}
-          <li className="relative group text-xl md:text-2xl">
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "semester" ? null : "semester")
@@ -206,8 +229,13 @@ export default function AdminNavbar() {
               เทอม
             </button>
             <div
+              onClick={() => {
+                setDropdownOpen(null)
+                setIsOpen(false)
+                return
+              }}
               className={`${dropdownOpen === "semester" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               <Link
                 href="/admin/semester/semesterAll"
@@ -228,7 +256,7 @@ export default function AdminNavbar() {
           <li>
             <button
               onClick={logOut}
-              className="text-xl md:text-2xl hover:text-white/70"
+              className="text-xl lg:text-2xl hover:text-white/70"
             >
               ล็อกเอาท์
             </button>

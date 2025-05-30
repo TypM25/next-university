@@ -68,7 +68,7 @@ export default function StudentNavbar() {
 
   //  เมนูรายวิชา
   const subjectMenu = [
-    { name: "วิชาที่ลงทะเบียน", path: `/student/subject/subjectAll`},
+    { name: "วิชาที่ลงทะเบียน", path: `/student/subject/subjectAll` },
     ...(canReg ?
       [
         { name: "เพิ่ม/ถอนรายวิชา", path: "/student/subject/subjectUpdate" }
@@ -77,14 +77,14 @@ export default function StudentNavbar() {
   ];
 
   return (
-    <nav className="flex flex-col justify-between px-4 py-3 bg-[#A31D1D] text-[#FEF9E1] rounded-lg md:flex-row">
+    <nav className="flex flex-col justify-between px-4 py-3 bg-[#A31D1D] text-[#FEF9E1] rounded-lg lg:flex-row">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between">
         <Link href="/student" className="text-3xl font-bold text-[#FEF9E1]">
           {user.username}
         </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-[#FEF9E1] focus:outline-none"
+          className="lg:hidden p-2 text-[#FEF9E1] focus:outline-none"
         >
           ☰
         </button>
@@ -92,30 +92,36 @@ export default function StudentNavbar() {
 
       <div
         className={`${isOpen ? "block" : "hidden"
-          } mt-4 md:mt-0 md:flex md:items-center md:justify-center`}
+          } mt-4 lg:mt-0 lg:flex lg:items-center lg:justify-center`}
       >
-        <ul className="flex flex-col md:flex-row md:items-center md:justify-center md:space-x-6 text-lg font-semibold gap-4 md:px-0">
+        <ul className="flex flex-col lg:flex-row lg:items-center lg:justify-center lg:space-x-6 text-lg font-semibold gap-4 lg:px-0">
           <li>
             <Link
               href="/student"
-              className="block text-xl md:text-2xl hover:text-white/70"
+              className="block text-xl lg:text-2xl hover:text-white/70"
             >
               หน้าหลัก
             </Link>
           </li>
 
+          {/* ถ้ายังไม่ได้ลงทะเบียนนิสิต */}
           {!student && (
-            <li>
+            <li onClick={() => {
+              setDropdownOpen(null)
+              setIsOpen(false)
+              return
+            }}>
               <Link
                 href="/student/create"
-                className="block text-xl md:text-2xl hover:text-white/70"
+                className="block text-xl lg:text-2xl hover:text-white/70"
               >
                 ลงทะเบียนนิสิต
               </Link>
             </li>
           )}
 
-          <li className="relative group text-xl md:text-2xl">
+          {/* รายวิชา */}
+          <li className="relative group text-xl lg:text-2xl">
             <button
               onClick={() =>
                 setDropdownOpen(dropdownOpen === "subject" ? null : "subject")
@@ -124,9 +130,13 @@ export default function StudentNavbar() {
             >
               รายวิชา
             </button>
-            <div
+            <div onClick={() => {
+              setDropdownOpen(null)
+              setIsOpen(false)
+              return
+            }}
               className={`${dropdownOpen === "subject" ? "block" : "hidden"
-                } md:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
+                } lg:group-hover:block absolute top-6 left-5 bg-white text-gray-700 mt-2 rounded shadow-lg w-48 z-10`}
             >
               {subjectMenu.map((item) => (
                 <Link
@@ -140,10 +150,11 @@ export default function StudentNavbar() {
             </div>
           </li>
 
+          {/* ล็อคเอาท์ */}
           <li>
             <button
               onClick={logOut}
-              className="text-xl md:text-2xl hover:text-white/70"
+              className="text-xl lg:text-2xl hover:text-white/70"
             >
               ล็อกเอาท์
             </button>
