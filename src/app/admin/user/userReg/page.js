@@ -31,8 +31,8 @@ export default function UserReg() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log("role --->", role)
-        console.log("roles --->", roles)
+        // console.log("role --->", role)
+        // console.log("roles --->", roles)
         if (!username || !password || !confirmPassword) {
             setError(true)
             return setErrMes("กรุณากรอกข้อมูลให้ครบ")

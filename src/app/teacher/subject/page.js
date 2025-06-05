@@ -27,8 +27,8 @@ export default function AddSubject() {
     //ลงทะเบียนสอนรายวิชา
     async function clickAdd(e) {
         e.preventDefault();
-        console.log(data)
 
+        // console.log("id sub : ", idSubject)
         try {
             const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
             const res_check = await axios.post(API_URL_CHECK)
@@ -36,8 +36,8 @@ export default function AddSubject() {
                 return alert(response.data.message)
 
             }
-            const API_URL_ADD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/add/subject/${idTeacher}/${idSubject}`;
-            const response = await axios.post(API_URL_ADD)
+            const API_URL_ADD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/add/subject`;
+            const response = await axios.post(API_URL_ADD, { teacher_id: idTeacher, subject_id: idSubject })
             if (!response.data.status_code === 200) {
                 return alert(response.data.message)
             }
@@ -53,11 +53,6 @@ export default function AddSubject() {
 
     //ถอนรายวิชา
     async function clickRemove() {
-        if (idSubject === '') {
-            setError(true)
-            setErrMes("กรุณากรอกรหัสรายวิชาเพื่อลบ")
-            return;
-        }
         try {
             const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
             await axios.post(API_URL_CHECK)
@@ -65,6 +60,11 @@ export default function AddSubject() {
             setErrMes("คุณยังไม่ได้ลงทะเบียนวิชานี้")
 
         } catch (err) {
+            if (!idSubject || !idTeacher) {
+                setError(true)
+                setErrMes(err.response?.data?.message)
+                return
+            }
             if (err.response?.status === 409) {
                 const API_URL_REMOV = `${process.env.NEXT_PUBLIC_API_URL}/teacher/remove/subject/${idTeacher}/${idSubject}`;
                 const response = await axios.delete(API_URL_REMOV)
@@ -79,17 +79,27 @@ export default function AddSubject() {
         }
     }
 
+    async function fetchIdTeacher() {
+        try {
+            const API_URL_FIND = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
+            const response = await axios.get(API_URL_FIND)
+            console.log(response.data.data.teacher_id)
+            setIdTeacher(response.data.data.teacher_id)
+            setError(false)
+            setErrMes("")
+        }
+        catch (err) {
+            setError(true)
+            setErrMes(error.response?.data?.message)
+        }
+    }
+
     //ค้นหาข้อมูลรายวิชา
     async function findData() {
         try {
             const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${idSubject}`;
-            const API_URL_FIND = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
-            const res_sub = await axios.get(API_URL)
-            const res_teacher = await axios.get(API_URL_FIND)
-
-
-            setData(res_sub.data.data)
-            setIdTeacher(res_teacher.data.data.teacher_id)
+            const response = await axios.get(API_URL)
+            setData(response.data.data)
             setError(false)
             setErrMes("")
         } catch (error) {
@@ -99,9 +109,14 @@ export default function AddSubject() {
     }
 
     useEffect(() => {
-        if (!idSubject) {
+        if (user)
+            fetchIdTeacher()
+    }, [user])
+
+    useEffect(() => {
+        if (!idSubject || isNaN(idSubject)) {
             setError(true)
-            setErrMes("กรุณากรอกรหัสนิสิต")
+            setErrMes("กรุณากรอกรหัสวิชา")
             return;
         };
         findData()
@@ -121,7 +136,7 @@ export default function AddSubject() {
                             className='px-4 w-full h-9 border-b rounded-none'
                         />
 
-                          {/*ERROR BOX MUI */}
+                        {/*ERROR BOX MUI */}
                         {error && (
                             <div
                                 className='flex self-start p-2 my-3 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300'

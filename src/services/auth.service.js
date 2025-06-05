@@ -13,24 +13,38 @@ const register = async (username, password, confirmPassword, role_name) => {
 };
 
 const login = async (username, password) => {
-    return await axios.post(API_URL + "signin", { username: username, password: password, })
-        .then((response) => {
-            if (response.data.data.accessToken) {
-                localStorage.setItem("token", JSON.stringify(response.data.data.accessToken));
+    try {
+        const response = await axios.post(API_URL + "signin", { username: username, password: password, })
+        if (response.data.data.accessToken) {
+            localStorage.setItem("token", JSON.stringify(response.data.data.accessToken));
 
-                //ตั้ง cookie ให้ middleware อ่านได้
-                Cookies.set("accessToken", response.data.data.accessToken);
-            }
-            return response.data.data.accessToken;
-        });
+            //ตั้ง cookie ให้ middleware อ่านได้
+            Cookies.set("accessToken", response.data.data.accessToken);
+            return {
+                accessToken: response.data.data.accessToken,
+                message: response.data.message
+            };
+        }
+    }
+    catch (err) {
+        return {
+            accessToken: null,
+            message: err.response?.data.message
+        };
+    }
 };
 
 const logout = async () => {
     localStorage.removeItem("token");
     Cookies.remove("accessToken");
-    return await axios.post(API_URL + "signout").then((response) => {
-        return response.data;
-    });
+    try {
+        const response = await axios.post(API_URL + "signout")
+        return response.data.message;
+    }
+    catch (err) {
+        return err.response?.data.message;
+    }
+
 };
 
 const getToken = () => {

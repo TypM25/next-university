@@ -14,22 +14,14 @@ export default function SubjectUpdate() {
   const [error, setError] = useState(false);
   const [errMes, setErrMes] = useState("")
 
+  //Error update message box
+  const [errorUpdate, setErrorUpdate] = useState(false)
+  const [errMesUpdate, setErrMesUpdate] = useState("")
+
   const update_data = {
     subject_name: newSubjectName,
     credits: credits
   }
-
-  function setMode(e) {
-    const id = e.target.id
-    if (id === 'create') {
-      setCreateMode(!createMode)
-      setEditMode(false)
-    } else if (id === 'edit') {
-      setEditMode(!editMode)
-      setCreateMode(false)
-    }
-  }
-
 
   async function clickConfirmEdit(e) {
     e.preventDefault();
@@ -38,11 +30,10 @@ export default function SubjectUpdate() {
       setErrMes("กรุณากรอกชื่อรายวิชาใหม่")
       return;
     }
-
     try {
-        //แก้ไขรายวิชา
+      //แก้ไขรายวิชา
       const API_URL_CREATE = `${process.env.NEXT_PUBLIC_API_URL}/admin/create/subject/${idSubject}`;
-        //อัพเดทรายวิชา
+      //อัพเดทรายวิชา
       const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/subject/${idSubject}`;
       const Link = createMode ? API_URL_CREATE : API_URL_UPD
       const response = createMode
@@ -51,13 +42,13 @@ export default function SubjectUpdate() {
 
       setError(false)
       alert("ดำเนินการสำเร็จ")
-    } catch (err) {
-      setError(true)
-      setErrMes(err.response?.data?.message)
+    } catch (error) {
+      setErrorUpdate(true)
+      setErrMesUpdate(error.response.data.message)
     }
   }
 
-    //ลบรายวิชา
+  //ลบรายวิชา
   async function clickDelete() {
     if (!idSubject) {
       setError(true)
@@ -76,7 +67,7 @@ export default function SubjectUpdate() {
     }
   }
 
-    //ค้นหาข้อมูลรายวิชา
+  //ค้นหาข้อมูลรายวิชา
   async function findSubject() {
     try {
       const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/admin/find/subject/${idSubject}`;
@@ -93,7 +84,7 @@ export default function SubjectUpdate() {
   useEffect(() => {
     if (!idSubject) {
       setError(true)
-      setErrMes("กรุณากรอกรหัสนิสิต")
+      setErrMes("กรุณากรอกรหัสวิชา")
       return;
     }
     findSubject()
@@ -141,14 +132,22 @@ export default function SubjectUpdate() {
         <div className='flex justify-center mt-7'>
           <button
             id='create'
-            onClick={setMode}
+            onClick={() => {
+              setCreateMode(!createMode)
+              setEditMode(false)
+              return
+            }}
             className='w-auto px-4 py-2 mx-3 font-bold text-white rounded-full bg-green-600 hover:bg-green-700'
           >
             สร้าง
           </button>
           <button
             id='edit'
-            onClick={setMode}
+            onClick={() => {
+              setEditMode(!editMode)
+              setCreateMode(false)
+              return
+            }}
             className='w-auto px-4 py-2 mx-3 font-bold text-white rounded-full bg-yellow-500 hover:bg-yellow-600'
           >
             แก้ไข
@@ -187,6 +186,19 @@ export default function SubjectUpdate() {
               className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light'
               type='text'
             />
+            {/*ERROR UPDATE BOX MUI */}
+            {
+              errorUpdate && <div className="flex self-start p-2 my-7 text-sm text-gray-800 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300" role="alert">
+                <svg className="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span className="sr-only">Info</span>
+                <div>
+                  <span className="font-medium">{errMesUpdate}</span>
+                </div>
+              </div>
+            }
+
             <button
               onClick={clickConfirmEdit}
               className='self-center w-20 py-2 mx-3 font-bold text-black/70 rounded-full bg-gray-400 hover:bg-gray-500'
@@ -196,7 +208,7 @@ export default function SubjectUpdate() {
           </div>
         )}
       </div>
-    </div>
+    </div >
 
   )
 }

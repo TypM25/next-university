@@ -42,7 +42,7 @@ export default function GradeComponent() {
     });
   };
 
-   //หาข้อมูลรายวิชาด้วย subject_id เพื่อเเสดงในตาราง
+   //หานิสิตที่เรียนวิชานี้
   async function fetchData() {
     try {
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`)

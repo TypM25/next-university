@@ -34,7 +34,7 @@ export default function TeacherNavbar() {
         console.log(res.data.message);
       }
     } catch (error) {
-      console.error(error?.response?.data?.message || error.message);
+      console.log(error?.response?.data?.message || error.message);
     }
   }
 
@@ -43,8 +43,8 @@ export default function TeacherNavbar() {
     try {
       const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`
       );
-      setTeacher(res.data.data);
-      setIdSubject(res.data.data.subject_id)
+      setTeacher(res?.data.data);
+      setIdSubject(res?.data.data.subject_id)
     } catch (err) {
       if (err.response?.status === 404) {
         setTeacher(null);

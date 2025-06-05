@@ -31,35 +31,29 @@ export default function Login() {
       return setErrMes("กรุณากรอกข้อมูลให้ครบ")
     }
 
-    try {
-      const accessToken = await AuthService.login(username, password);
-      if (accessToken) {
-        setError(false)
-        const decoded = jwtDecode(accessToken)
-        const showAdminBoard = decoded.role.includes("admin");
-        const showStudentBoard = decoded.role.includes("student");
-        const showTeacherBoard = decoded.role.includes("teacher");
-        if (showAdminBoard) {
-          return router.push('/admin');
-        }
-        else if (showStudentBoard) {
-          return router.push('/student');
-        }
-        else if (showTeacherBoard) {
-          return router.push('/teacher');
-        }
 
-        // router.push('/profile');
+    const { accessToken, message } = await AuthService.login(username, password);
+    if (accessToken) {
+      setError(false)
+      const decoded = jwtDecode(accessToken)
+      const showAdminBoard = decoded.role.includes("admin");
+      const showStudentBoard = decoded.role.includes("student");
+      const showTeacherBoard = decoded.role.includes("teacher");
+      if (showAdminBoard) {
+        return router.push('/admin');
+      }
+      else if (showStudentBoard) {
+        return router.push('/student');
+      }
+      else if (showTeacherBoard) {
+        return router.push('/teacher');
       }
 
-    } catch (error) {
-
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) || error.message
-      setError(true)
-      setErrMes(resMessage);
+      // router.push('/profile');
+    }
+    else {
+      setError(true);
+      setErrMes(message);
     }
   }
 
@@ -74,7 +68,6 @@ export default function Login() {
       motion-scale-in-[0.5] motion-opacity-in-[0%] motion-duration-[300ms] motion-ease-spring-bouncier'>
         <img src="/img/bus.png" alt="หมวก" className="absolute w-32 h-32 -top-22 left-14 
         motion-preset-shake motion-duration-900" />
-
 
 
         <form className='w-[60%] flex flex-col justify-center items-center text-center

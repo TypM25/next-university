@@ -10,18 +10,9 @@ import { useDebounce } from 'use-debounce';
 
 
 const dropdown = [
-    {
-        value: "user_id",
-        name: "ID"
-    },
-    {
-        value: "username",
-        name: "Username"
-    },
-    {
-        value: "createdAt",
-        name: "CreatedAt"
-    },
+    { value: "user_id", name: "ID" },
+    { value: "username", name: "Username" },
+    { value: "createdAt", name: "CreatedAt" },
 ]
 
 export default function UserAll() {

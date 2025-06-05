@@ -1,5 +1,6 @@
 import React from 'react'
 
+//filter เมนูในการsearch
 export default function Filter({ filter, handleChange }) {
     return (
         <div className='w-full my-4 flex flex-col items-start self-start '>

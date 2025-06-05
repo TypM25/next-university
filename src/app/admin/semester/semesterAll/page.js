@@ -6,7 +6,6 @@ import Table from '@/components/all/table';
 import Filter from '@/components/all/filter';
 import { useDebounce } from 'use-debounce';
 
-
 const dropdown = [
     { value: "term_id", name: "Term ID" },
     { value: "term_name", name: "Term Name" },

@@ -19,7 +19,7 @@ export default function StudentComponent() {
 
     const [students, setStudents] = useState([])
 
-    //ค้นหารายวิชาด้วยsubject_id
+    //ค้นหานิสิตที่เรียนวิชานี้
     async function fetchData() {
         try {
             const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/subject/${subject_id}`;

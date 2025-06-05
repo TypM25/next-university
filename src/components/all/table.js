@@ -32,13 +32,13 @@ export default function Table({ isLoading, data }) {
                                                 key={idx}
                                                 className={`p-1 text-center text-sm lg:text-xl lg:px-6 lg:py-4 ${idx % 2 === 0 ? "bg-white" : "bg-gray-200"}`}>
                                                 {
-                                                    value == null || value === "" ?
+                                                    value == null || value === "" ? //ถ้าvalue = null ให้เเสดง "-"
                                                         "-"
-                                                        : typeof value === "boolean" ?
+                                                        : typeof value === "boolean" ?//ถ้าvalue != null เข็คbooleanถ้าใช่ เเล้วTruthyเเสดงtrue 
                                                             value ?
                                                                 "True"
                                                                 : "False"
-                                                            : value
+                                                            : value //ถ้า value != booleanเเสดงค่า
                                                 }
                                             </td>
                                         ))}
