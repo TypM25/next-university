@@ -74,13 +74,13 @@ export default function GradeComponent() {
   }, [])
 
   return (
-    <div className='w-[70%] h-[50%] px-4 flex flex-col justify-center items-center lg:w-fit '>
+    <div className='w-full h-[50%] px-4 flex flex-col justify-center items-center lg:w-fit '>
       <p className='flex flex-col items-center text-2xl font-bold mb-10 text-[#8E1616]'>แก้ไขเกรด</p>
       {
         Array.isArray(students) && students.length > 0 ? (
           <>
-            <div className='w-full h-auto overflow-y-auto max-h-[400px]
-                    lg:flex lg:justify-center'>
+              <div className='w-[90%] h-auto overflow-y-auto max-h-[400px]
+                    lg:w-auto lg:w-[80%] lg:scale-[100%] lg:flex lg:justify-center'>
               <TableContainer component={Paper} >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>

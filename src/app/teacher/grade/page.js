@@ -6,7 +6,7 @@ import { Suspense } from 'react';
 
 export default function Grade() {
   return (
-    <div>
+    <div className='w-full flex justify-center'>
       <Suspense fallback={<div><LoadingMui /></div>}>
         {/* เกรดนิสิตทั้งหมด */}
         <GradeComponent />

@@ -16,7 +16,7 @@ export default function StudentLayout({ children }) {
     }
   }, []);
   return (
-    <div className='relative min-h-screen w-screen bg-[#FEF9E1] overflow-hidden '>
+    <div className='relative w-full h-full bg-[#FEF9E1] overflow-hidden '>
       <header className="fixed p-4 w-full z-50">
         <StudentNavbar />
       </header>

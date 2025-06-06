@@ -72,8 +72,9 @@ export default function Login() {
 
         <form className='w-[60%] flex flex-col justify-center items-center text-center
         lg:w-[60%]'>
-          <h1 className='text-3xl text-[#EEEEEE] mb-10 font-bold z-6 whitespace-nowrap
-        lg:text-5xl lg:mb-15'>
+         <h1 className='text-3xl text-[#EEEEEE] mb-5 font-bold z-6 whitespace-nowrap
+            md:text-3xl lg:mb-10
+            lg:text-5xl lg:mb-10'>
             เข้าสู่ระบบ
           </h1>
           <ul className="w-full flex flex-col gap-[10%] text-start

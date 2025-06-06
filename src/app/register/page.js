@@ -69,9 +69,9 @@ function Register() {
 
     return (
         <div className="w-screen h-screen flex justify-center items-center bg-[#FEF9E1] ">
-            <div className=' relative h-[80%] w-[80%] flex flex-col justify-center items-center rounded-[50px] bg-[#A31D1D] shadow-xl shadow-yellow-500/50
-      md:h-[70%] md:w-[70%]
-      lg:w-[30%] lg:h-[70%]
+            <div className='py-10 box-border relative h-[ุ80%] w-[80%] flex flex-col justify-center items-center rounded-[50px] bg-[#A31D1D] shadow-xl shadow-yellow-500/50
+      md:h-[70%] md:w-[70%] md:py-20
+      lg:w-[30%] lg:h-[50%] lg:py-70
            motion-scale-in-[0.5] motion-opacity-in-[0%] motion-duration-[300ms] motion-ease-spring-bouncier'>
                 <img src="/img/hat2.png" alt="หมวก" className="absolute w-30 h-30 -top-16 z-7
                     motion-preset-shake motion-duration-900
@@ -79,25 +79,28 @@ function Register() {
 
                 <form className='w-[60%] flex flex-col justify-center items-center
                 lg:w-[60%]'>
-                    <h1 className='text-2xl text-[#EEEEEE] mb-10 font-bold z-6 whitespace-nowrap
-                    md:text-3xl
-                    lg:text-5xl lg:mb-15'>
+                    <h1 className='text-3xl text-[#EEEEEE] mb-5 font-bold z-6 whitespace-nowrap
+                        md:text-3xl lg:mb-10
+                        lg:text-5xl lg:mb-10'>
                         ลงทะเบียน
                     </h1>
                     <ul className="w-full flex flex-col gap-6">
                         <li >
-                            <p className='self-start text-xl font-semibold text-[#E5D0AC]'>ชื่อผู้ใช้</p>
+                            <p className='self-start text-lg font-semibold text-[#E5D0AC]
+                            lg:xl'>ชื่อผู้ใช้</p>
                             <input id='username' onChange={(e) => setUsername(e.target.value)}
                                 className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='text' ></input>
 
                         </li>
                         <li>
-                            <p className='self-start text-xl font-semibold text-[#E5D0AC]'>รหัสผ่าน</p>
+                            <p className='self-start text-lg font-semibold text-[#E5D0AC]
+                            lg:xl'>รหัสผ่าน</p>
                             <input id='password' onChange={(e) => setPassword(e.target.value)}
                                 className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
                         </li>
                         <li >
-                            <p className='self-start text-xl font-semibold text-[#E5D0AC]'>ยืนยันรหัสผ่าน</p>
+                            <p className='self-start text-lg font-semibold text-[#E5D0AC]
+                            lg:xl'>ยืนยันรหัสผ่าน</p>
                             <input id='confirmPassword' onChange={(e) => setConfirmPassword(e.target.value)}
                                 className='w-full py-2 px-4 rounded-full bg-gray-200 font-light' type='password' ></input>
                         </li>

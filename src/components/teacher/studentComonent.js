@@ -39,39 +39,43 @@ export default function StudentComponent() {
 
 
     return (
-        <div>
+        <>
             {
                 Array.isArray(students) && students.length > 0 ? (
-                    <TableContainer component={Paper} >
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="center">Student ID</TableCell>
-                                    <TableCell align="center">First Name</TableCell>
-                                    <TableCell align="center">Last Name</TableCell>
-                                    <TableCell align="center">Grade</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {students.map((row, rowIndex) => (
-                                    <TableRow key={rowIndex}>
-                                        <TableCell align="center">{row.student_id}</TableCell>
-                                        <TableCell align="center">{row.student_first_name}</TableCell>
-                                        <TableCell align="center">{row.student_last_name}</TableCell>
-                                        <TableCell align="center">
-                                            {row?.gradeDetails && row.gradeDetails.length > 0 ?
-                                                row.gradeDetails[0].grade
-                                                : "-"}
-                                        </TableCell>
+                    <div className='w-[90%] h-auto overflow-y-auto max-h-[400px]
+                    lg:w-auto lg:w-[80%] lg:scale-[100%] lg:flex lg:justify-center'>
+                        <TableContainer component={Paper} >
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">Student ID</TableCell>
+                                        <TableCell align="center">First Name</TableCell>
+                                        <TableCell align="center">Last Name</TableCell>
+                                        <TableCell align="center">Grade</TableCell>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                </TableHead>
+                                <TableBody>
+                                    {students.map((row, rowIndex) => (
+                                        <TableRow key={rowIndex}>
+                                            <TableCell align="center">{row.student_id}</TableCell>
+                                            <TableCell align="center">{row.student_first_name}</TableCell>
+                                            <TableCell align="center">{row.student_last_name}</TableCell>
+                                            <TableCell align="center">
+                                                {row?.gradeDetails && row.gradeDetails.length > 0 ?
+                                                    row.gradeDetails[0].grade
+                                                    : "-"}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </div>
+
                 ) : (
                     <LoadingMui />
                 )
             }
-        </div>
+        </>
     )
 }
