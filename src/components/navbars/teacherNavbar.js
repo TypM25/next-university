@@ -142,15 +142,19 @@ export default function TeacherNavbar() {
                 </li>
                 <li className=" hover:bg-gray-100">
                   <button
-                    onClick={() => {
-                      {
-                        idSubject ?
-                          router.push(`/teacher/student?subject_id=${idSubject}`)
-                          :
-                          console.log("Loading to student all page.")
+                    onClick={() =>
+                      router.push(`/teacher/student?subject_id=${idSubject}`)
+                    }
+                    // onClick={() => {
+                    //   {
+                    //     idSubject ?
+                    //       router.push(`/teacher/student?subject_id=${idSubject}`)
+                    //       :
+                    //       console.log("Loading to student all page.")
 
-                      }
-                    }}
+                    //   }
+                    // }}
+
                     className="block text-xl px-4 py-2"
                   >
                     นิสิตทั้งหมด
@@ -167,13 +171,14 @@ export default function TeacherNavbar() {
               onClick={() => {
                 setDropdownOpen(null)
                 setIsOpen(false)
-                {
+                return router.push(`/teacher/grade?subject_id=${idSubject}&term_id=${termId}`)
+                // {
 
-                  idSubject && termId ?
-                    router.push(`/teacher/grade?subject_id=${idSubject}&term_id=${termId}`)
-                    :
-                    console.log("Loading to grade all page.")
-                }
+                //   idSubject && termId ?
+                //     router.push(`/teacher/grade?subject_id=${idSubject}&term_id=${termId}`)
+                //     :
+                //     console.log("Loading to grade all page.")
+                // }
               }}
               className="text-xl lg:text-2xl hover:text-white/70"
             >

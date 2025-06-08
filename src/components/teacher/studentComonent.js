@@ -40,11 +40,11 @@ export default function StudentComponent() {
 
     return (
         <>
-            {
-                Array.isArray(students) && students.length > 0 ? (
+            {Array.isArray(students) && students.length !== 0 ? (
+                students.length > 0 ? (
                     <div className='w-[90%] h-auto overflow-y-auto max-h-[400px]
-                    lg:w-auto lg:w-[80%] lg:scale-[100%] lg:flex lg:justify-center'>
-                        <TableContainer component={Paper} >
+                        lg:w-auto lg:w-[80%] lg:scale-[100%] lg:flex lg:justify-center'>
+                        <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
@@ -61,8 +61,8 @@ export default function StudentComponent() {
                                             <TableCell align="center">{row.student_first_name}</TableCell>
                                             <TableCell align="center">{row.student_last_name}</TableCell>
                                             <TableCell align="center">
-                                                {row?.gradeDetails && row.gradeDetails.length > 0 ?
-                                                    row.gradeDetails[0].grade
+                                                {row?.gradeDetails && row.gradeDetails.length > 0
+                                                    ? row.gradeDetails[0].grade
                                                     : "-"}
                                             </TableCell>
                                         </TableRow>
@@ -71,11 +71,13 @@ export default function StudentComponent() {
                             </Table>
                         </TableContainer>
                     </div>
-
                 ) : (
                     <LoadingMui />
                 )
-            }
+            ) : (
+                <p>ไม่มีข้อมูล</p>
+            )}
         </>
+
     )
 }
