@@ -62,13 +62,8 @@ export default function UserUpdate() {
             const API_URL_LOGIN = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signin`;
             await axios.post(API_URL_LOGIN, login_data)
             setErrMesUpdate(null)
-            setErrorUpdate(true)
+            setErrorUpdate(false)
 
-            if (password === newPassword) {
-                setErrMesUpdate("กรุณาเปลี่ยนรหัสผ่าน")
-                setErrorUpdate(true)
-                return;
-            }
         }
         catch (error) {
             setErrorUpdate(true)
@@ -83,6 +78,7 @@ export default function UserUpdate() {
             const API_URL_UPD = `${process.env.NEXT_PUBLIC_API_URL}/admin/update/user`;
             const response2 = await axios.put(API_URL_UPD, change_password)
             setErrorUpdate(false)
+            setErrMesUpdate(null)
             setEditMode(false);
 
             setCfPassword(null);
@@ -166,7 +162,7 @@ export default function UserUpdate() {
                 <p className='self-center text-lg text-[#BB3E00]'> {data.username}</p>
             </div>
             {
-                editMode && <div className='flex flex-col p-5 w-[80%] bg-gray-100 rounded-lg
+                editMode && <div className='flex flex-col p-5 mt-10 w-[80%] bg-gray-100 rounded-lg
                 lg:p-10'>
                     <p className='mb-5 self-start font-semibold'>เปลี่ยนรหัสผ่าน</p>
                     <p className='self-start'>รหัสผ่านเดิม</p>

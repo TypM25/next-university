@@ -90,7 +90,7 @@ export default function ChatPage({ user_sender, user_receiver }) {
   return (
     <>
       <ul id="messages" className="flex-grow overflow-auto rounded p-2">
-        {messages.map((msg, index) => (
+        {messages?.map((msg, index) => (
           <li
             key={`${msg.id}-${index}`}
             className={`mb-1 ${msg.sender_id === user_sender ? 'text-right' : 'text-left'}`}
