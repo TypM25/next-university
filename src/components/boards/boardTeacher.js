@@ -12,6 +12,7 @@ const BoardTeacher = () => {
     //URL สำหรับส่งไป UPLOAD COMPONENT
     const API_URL_IMAGE = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/files`;
     const API_URL_UPLOAD = `${process.env.NEXT_PUBLIC_API_URL}/teacher/upload`;
+    
 
     useEffect(() => {
         const token = AuthService.getToken();
@@ -23,10 +24,7 @@ const BoardTeacher = () => {
     }, []);
 
 
-    useEffect(() => {
-        if (user && user.username) {
-            async function fetchData() {
-                console.log("username", user.username)
+      async function fetchData() {
                 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
                 try {
                     const response = await axios.get(API_URL);
@@ -42,6 +40,9 @@ const BoardTeacher = () => {
                 }
             }
 
+
+    useEffect(() => {
+        if (user && user.user_id) {
             fetchData();
         }
     }, [user])

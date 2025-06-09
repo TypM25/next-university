@@ -68,7 +68,7 @@ export default function SubjectAll() {
         }
     }
     useEffect(() => {
-        if (user && user.username) {
+        if (user && user.user_id) {
             fetchData();
             checksemester();
         }
@@ -106,10 +106,10 @@ export default function SubjectAll() {
                                                         alert("คุณประเมินอาจารย์ท่านนี้เเล้ว")
                                                         return
                                                     }
-                                                    console.log("============================")
-                                                    console.log(idStudent)
-                                                    console.log(t.teacher_id)
-                                                    console.log(idTerm)
+                                                    // console.log("============================")
+                                                    // console.log(idStudent)
+                                                    // console.log(t.teacher_id)
+                                                    // console.log(idTerm)
 
                                                     router.push(`/student/evaluation?student_id=${idStudent}&teacher_id=${t.teacher_id}&term_id=${idTerm}`)
                                                 }}

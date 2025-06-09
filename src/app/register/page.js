@@ -41,12 +41,8 @@ function Register() {
                 router.push('/login');
             }
         } catch (error) {
-            const resMessage =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) || error.message
             setError(true)
-            setErrMes(resMessage);
+            setErrMes(error.response.data.message);
         }
     }
 

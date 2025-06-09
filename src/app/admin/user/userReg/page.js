@@ -50,12 +50,8 @@ export default function UserReg() {
                 alert(response.data.message)
             }
         } catch (error) {
-            const resMessage =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) || error.message
             setError(true)
-            setErrMes(resMessage);
+            setErrMes(error.response.data.message);
 
         }
     }

@@ -57,6 +57,7 @@ export default function AddSubject() {
             const API_URL_CHECK = `${process.env.NEXT_PUBLIC_API_URL}/teacher/check/subject/${idTeacher}/${idSubject}`;
             await axios.post(API_URL_CHECK)
             //ยังไม่ลงทะเบียน
+             setError(true)
             setErrMes("คุณยังไม่ได้ลงทะเบียนวิชานี้")
 
         } catch (err) {

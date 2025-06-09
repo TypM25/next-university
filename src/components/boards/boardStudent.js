@@ -23,7 +23,6 @@ const BoardStudent = () => {
     }, []);
 
     async function fetchData() {
-        console.log("username", user.username)
         try {
             const stud_data = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/find/byuser/${user.user_id}`);
             const studentId = stud_data.data.data.student_id;
@@ -44,7 +43,7 @@ const BoardStudent = () => {
     }
 
     useEffect(() => {
-        if (user && user.username) {
+        if (user && user.user_id) {
             fetchData();
         }
     }, [user])

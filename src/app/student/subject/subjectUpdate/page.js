@@ -107,7 +107,7 @@ export default function SubjectUpdate() {
   }
 
   useEffect(() => {
-    if (user && user.username) {
+    if (user && user.user_id) {
       fetchData();
     }
   }, [user])

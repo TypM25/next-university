@@ -31,12 +31,7 @@ export default function CreateTeacher() {
             }
         }
         catch (error) {
-            const resMessage =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) || error.message
-
-            alert(resMessage);
+            alert(error.response.data.message);
         }
     }
 
