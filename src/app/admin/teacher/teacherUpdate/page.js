@@ -91,7 +91,7 @@ export default function TeacherUpdate() {
             lg:flex-row lg:gap-10'>
                     <p className='text-xl font-semibold text-black/70'>รหัสอาจารย์ :</p>
                     <div >
-                        <input id='id' onChange={(e) => setUser_id(e.target.value)} className='px-4 w-full h-9 border-b' />
+                        <input id='id' onChange={(e) => setIdTeacher(e.target.value)} className='px-4 w-full h-9 border-b' />
 
                         {/*ERROR BOX MUI */}
                         {

@@ -42,7 +42,7 @@ export default function CreateTeacher() {
                 <p className='self-start font-semibold'>ชื่อ</p>
                 <input id='firstname' onChange={(e) => setFirstname(e.target.value)} className='w-full p my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text'></input>
                 <p className='self-start font-semibold'>นามสกุล</p>
-                <input id='lastname' onChange={(e) => setFirstname(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text'></input>
+                <input id='lastname' onChange={(e) => setLastname(e.target.value)} className='w-full my-4 py-2 px-4 rounded-full bg-gray-200 font-light' type='text'></input>
                 <button type="submit" onClick={handleSubmit} className='mt-10 cursor-pointer self-center w-20 p-2 bg-amber-300 rounded-full hover:bg-amber-400 hover:text-white'>ยืนยัน</button>
 
             </form>
