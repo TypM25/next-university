@@ -60,7 +60,8 @@ export default function TeacherNavbar() {
   }, []);
 
   useEffect(() => {
-    if (user && user?.user_id) {
+    console.log("user_id ส่งไป:", user?.user_id);
+    if (user && user.user_id) {
       console.log("fetch new..")
       fetchData();
     }

@@ -28,7 +28,7 @@ const BoardTeacher = () => {
                 const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/teacher/find/byuser/${user.user_id}`;
                 try {
                     const response = await axios.get(API_URL);
-                    setTeacher(response.data.data);
+                    setTeacher(response?.data?.data);
                 } catch (error) {
                     if (error.response && error.response.status === 404) {
                         // ถ้ายังไม่ลงทะเบียนก็ไม่ต้องตั้งค่า teacher
