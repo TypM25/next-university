@@ -52,7 +52,7 @@ export default function ChatPage({ user_sender, user_receiver }) {
   useEffect(() => {
     if (!user_sender) return;
     //หาroom chat
-    socketRef.current = io('http://localhost:9000', {
+    socketRef.current = io(process.env.NEXT_PUBLIC_API_URL, {
       auth: {
         user_id: user_sender,
         chat_partner_id: user_receiver,
