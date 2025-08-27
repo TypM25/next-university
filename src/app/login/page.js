@@ -108,13 +108,13 @@ export default function Login() {
           }
           <div className='block w-full gap-10 flex justify-center mt-10 
            '>
-            <button type="submit" onClick={handleSubmit} className='cursor-pointer self-center w-auto max-h-10 py-2 px-4 bg-[#EEEEEE] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
+            <button type="submit" onClick={handleSubmit} className='cursor-pointer self-center w-auto max-h-10 py-2 px-4 bg-[#F9CB43] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
               lg:text-lg
-              hover:bg-gray-400 hover:text-white' >
+              hover:bg-amber-400 hover:text-white' >
               ล็อคอิน</button>
-            <button type='button' onClick={() => router.push('/register')} className='cursor-pointer self-center w-auto max-h-10 py-2 px-4 bg-[#F9CB43] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
+            <button type='button' onClick={() => router.push('/register')} className='cursor-pointer self-center w-auto max-h-10 py-2 px-4 bg-[#EEEEEE] rounded-full whitespace-nowrap text-sm text-black/70 font-bold 
              lg:text-lg
-             hover:bg-amber-400 hover:text-white'>
+             hover:bg-gray-400 hover:text-white'>
               ลงทะเบียน</button>
           </div>
         </form>
